@@ -1,0 +1,12 @@
+// Primera linea
+x = (10 + 20 - 5) * 3;
+x;
+/* 
+ * Line 1
+ * Line 2
+ */
+y = (45  - 5) * 2;
+y;
+
+z = x + y;
+z;
