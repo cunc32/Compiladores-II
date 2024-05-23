@@ -1,3 +1,0 @@
-/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/CompiladoresII/ExprFlexBisonV3/build/CMakeFiles/Expr.dir
-/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/CompiladoresII/ExprFlexBisonV3/build/CMakeFiles/edit_cache.dir
-/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/CompiladoresII/ExprFlexBisonV3/build/CMakeFiles/rebuild_cache.dir
