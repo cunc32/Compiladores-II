@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_MNT_C_USERS_CARLO_ONEDRIVE_DOCUMENTOS_GITHUB_COMPILADORES_II_EXPRFLEXBISONV3_BUILD_EXPRPARSERIMPL_HPP_INCLUDED
-# define YY_YY_MNT_C_USERS_CARLO_ONEDRIVE_DOCUMENTOS_GITHUB_COMPILADORES_II_EXPRFLEXBISONV3_BUILD_EXPRPARSERIMPL_HPP_INCLUDED
+#ifndef YY_YY_MNT_C_USERS_CARLO_ONEDRIVE_DOCUMENTOS_GITHUB_COMPILADORES_II_LPP_PROYECTO_CARLOS_NUNEZ_BUILD_EXPRPARSERIMPL_HPP_INCLUDED
+# define YY_YY_MNT_C_USERS_CARLO_ONEDRIVE_DOCUMENTOS_GITHUB_COMPILADORES_II_LPP_PROYECTO_CARLOS_NUNEZ_BUILD_EXPRPARSERIMPL_HPP_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -45,20 +45,21 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 26 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/ExprFlexBisonV3/ExprParserImpl.y"
+#line 26 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprParserImpl.y"
 
 #include <string>
 #include <variant>
+#include "ExprAst.hpp"
 
 class ExprParser; // Forward declaration
 
-using ParserValueType = std::variant<std::string, double>;
+using ParserValueType = Node *;
 
 #define YYSTYPE ParserValueType
 #define YYSTYPE_IS_DECLARED 1
 
 
-#line 62 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/ExprFlexBisonV3/build/ExprParserImpl.hpp"
+#line 63 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/build/ExprParserImpl.hpp"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -126,7 +127,8 @@ using ParserValueType = std::variant<std::string, double>;
     Retorne = 312,                 /* "Retorne"  */
     Type = 313,                    /* "Tipo"  */
     Es = 314,                      /* "Es"  */
-    Lea = 315                      /* "Lea"  */
+    Lea = 315,                     /* "Lea"  */
+    SinoSi = 316                   /* "Sino Si"  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -144,4 +146,4 @@ typedef int YYSTYPE;
 int yyparse (ExprParser& parser);
 
 
-#endif /* !YY_YY_MNT_C_USERS_CARLO_ONEDRIVE_DOCUMENTOS_GITHUB_COMPILADORES_II_EXPRFLEXBISONV3_BUILD_EXPRPARSERIMPL_HPP_INCLUDED  */
+#endif /* !YY_YY_MNT_C_USERS_CARLO_ONEDRIVE_DOCUMENTOS_GITHUB_COMPILADORES_II_LPP_PROYECTO_CARLOS_NUNEZ_BUILD_EXPRPARSERIMPL_HPP_INCLUDED  */

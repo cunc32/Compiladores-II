@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/ExprFlexBisonV3
+# Install script for directory: /mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/ExprFlexBisonV3/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -66,7 +66,8 @@ enum class Token: int {
     Retorne = 312,
     Type=313,
     Es=314,
-    Lea=315
+    Lea=315,
+    SinoSi=316
 };
 
 class ExprLexer

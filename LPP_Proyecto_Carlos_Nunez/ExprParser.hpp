@@ -4,35 +4,29 @@
 #include "ExprParserImpl.hpp"
 #include "ExprLexer.hpp"
 #include <unordered_map>
+#include <iostream>
+#include <fstream>
+#include <vector>
 
 class ExprParser
 {
 public:
-    ExprParser(ExprLexer& lexer)
-      : lexer(lexer)
+    ExprParser(ExprLexer& lexer, const std::string& asmFile)
+      : lexer(lexer), asmFile(asmFile)
     {}
 
     int parse();
 
-    void assign(const std::string name, double _value);
+    void createAsm(const std::string& code);
     
-    void print(const std::string& cname) const ;
-
-    void setValue(double _value)
-    { value = _value; }
-
-    double getValue() const
-    { return value; }
-
     ExprLexer& getLexer()
     { return lexer; }
 
-    double constValue(const std::string& cname) const;
-
 private:
-    std::unordered_map<std::string, double> variables;
+    std::vector<Node *> stmts;
     double value;
     ExprLexer& lexer;
+    const std::string& asmFile;
 };
 
 #endif

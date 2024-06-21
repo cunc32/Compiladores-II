@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/ExprFlexBisonV3/build -I/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/ExprFlexBisonV3
+CXX_INCLUDES = -I/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/build -I/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez
 
-CXX_FLAGS = 
+CXX_FLAGS = -std=gnu++17
 

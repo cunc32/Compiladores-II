@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/Expr.dir/ExprAst.cpp.o"
+  "CMakeFiles/Expr.dir/ExprAst.cpp.o.d"
   "CMakeFiles/Expr.dir/ExprLexer.cpp.o"
   "CMakeFiles/Expr.dir/ExprLexer.cpp.o.d"
   "CMakeFiles/Expr.dir/ExprLexerImpl.cpp.o"
@@ -11,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Expr.dir/main.cpp.o.d"
   "Expr"
   "Expr.pdb"
+  "ExprAst.cpp"
+  "ExprAst.hpp"
   "ExprLexerImpl.cpp"
   "ExprLexerImpl.h"
   "ExprParserImpl.cpp"

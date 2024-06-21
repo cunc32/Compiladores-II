@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "ExprLexer.hpp"
+#include "ExprAst.hpp"
 
 #define YY_DECL Token ExprLexer::nextTokenHelper(yyscan_t yyscanner, ParserValueType *lval)
 #define yyterminate() return Token::Eof
@@ -31,7 +32,7 @@
 "//"[^\n]*\n { }
 "/*"        { BEGIN(comment); }
 \"          { BEGIN(str); }
-\'[^\n]\'   { return Token::Char; }
+\'[^\n]\'   { *lval = new NumExpr(yytext[1]); return Token::Char; }
 
 
 "Entero"    { return Token::DefInt; }
@@ -67,6 +68,7 @@
 "Tipo"      { return Token::Type; }
 "Es"        { return Token::Es; }
 "Lea"       { return Token::Lea; }
+"Sino Si"   { return Token::SinoSi; }
 
 
 "+"		    { return Token::OpAdd; }
@@ -90,11 +92,11 @@
 ","         { return Token::Comma; }
 "0x"([0-9a-fA-F])+  { return Token::Hex; }
 "0b"[0-1]+          { return Token::Binary; }
-[0-9]+(\.[0-9]+)?	{ *lval = std::atof(yytext); return Token::Number; }
-[a-zA-Z_][a-zA-Z0-9_]*	{ *lval = std::string(yytext); return Token::Ident; }
+[0-9]+(\.[0-9]+)?	{ *lval = new NumExpr(std::atof(yytext)); return Token::Number; }
+[a-zA-Z_][a-zA-Z0-9_]*	{ *lval = new IdExpr(std::string(yytext)); return Token::Ident; }
 .		{ std::cerr << "Invalid symbol: " << yytext[0] << '\n'; return Token::Error; }
 
-<str>[^"]* {  }
+<str>[^"]* { *lval = new StrExpr(yytext); }
 <str>\" { BEGIN(INITIAL); return Token::Str; }
 
 <comment>"*/" { BEGIN(INITIAL); }
