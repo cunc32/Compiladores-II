@@ -3,7 +3,7 @@
 prg:
 	push ebp
 	mov ebp, esp
-	sub esp, 4
+	sub esp, 8
 
 
 	mov dword [ebp + 4], 1

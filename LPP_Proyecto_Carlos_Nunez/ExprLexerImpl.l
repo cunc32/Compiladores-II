@@ -32,14 +32,14 @@
 "//"[^\n]*\n { }
 "/*"        { BEGIN(comment); }
 \"          { BEGIN(str); }
-\'[^\n]\'   { *lval = new NumExpr(yytext[1]); return Token::Char; }
+\'[^\n]\'   { *lval = new CharExpr(yytext[1]); return Token::Char; }
 
 
-"Entero"    { return Token::DefInt; }
+"Entero"    { *lval = new StrExpr(std::string(yytext)); return Token::DefInt; }
 "Real"      { return Token::DefDbl; }
 "Cadena"    { return Token::DefStr; }
-"Caracter"  { return Token::DefChar; }
-"Booleano"  { return Token::DefBool; }
+"Caracter"  { *lval = new StrExpr(std::string(yytext)); return Token::DefChar; }
+"Booleano"  { *lval = new StrExpr(std::string(yytext)); return Token::DefBool; }
 "Arreglo"   { return Token::DefArr; }
 "de"        { return Token::de; }
 "Funcion"   { return Token::DefFunc; }
@@ -56,8 +56,8 @@
 "Haga"      { return Token::Haga; }
 "Escriba"   { return Token::Escriba; }
 "Leer"      { return Token::Leer; }
-"verdadero" { return Token::Verdadero; }
-"falso"     { return Token::Falso; }
+"verdadero" { *lval = new BoolVarExpr(1); return Token::Verdadero; }
+"falso"     { *lval = new BoolVarExpr(0); return Token::Falso; }
 "repita"    { return Token::Repita; }
 "Hasta"     { return Token::Hasta; }
 "Y"         { return Token::Y; }

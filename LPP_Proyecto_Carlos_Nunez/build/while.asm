@@ -3,7 +3,7 @@
 prg:
 	push ebp
 	mov ebp, esp
-	sub esp, 8
+	sub esp, 12
 
 
 	mov dword [ebp + 4], 1
@@ -32,9 +32,9 @@ nlesse8:
 
 	mov edx, dword [ebp + 4]
 	add edx, 1
-	mov dword [ebp - 12], edx
+	mov dword [ebp - 16], edx
 
-	mov eax, dword [ebp - 12]
+	mov eax, dword [ebp - 16]
 	mov dword [ebp + 4], eax
 	jmp while4
 endwhile4:

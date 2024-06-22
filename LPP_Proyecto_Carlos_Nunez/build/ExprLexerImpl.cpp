@@ -1002,12 +1002,12 @@ YY_RULE_SETUP
 case 6:
 YY_RULE_SETUP
 #line 35 "ExprLexerImpl.l"
-{ *lval = new NumExpr(yytext[1]); return Token::Char; }
+{ *lval = new CharExpr(yytext[1]); return Token::Char; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 38 "ExprLexerImpl.l"
-{ return Token::DefInt; }
+{ *lval = new StrExpr(std::string(yytext)); return Token::DefInt; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
@@ -1022,12 +1022,12 @@ YY_RULE_SETUP
 case 10:
 YY_RULE_SETUP
 #line 41 "ExprLexerImpl.l"
-{ return Token::DefChar; }
+{ *lval = new StrExpr(std::string(yytext)); return Token::DefChar; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 42 "ExprLexerImpl.l"
-{ return Token::DefBool; }
+{ *lval = new StrExpr(std::string(yytext)); return Token::DefBool; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
@@ -1112,12 +1112,12 @@ YY_RULE_SETUP
 case 28:
 YY_RULE_SETUP
 #line 59 "ExprLexerImpl.l"
-{ return Token::Verdadero; }
+{ *lval = new BoolVarExpr(1); return Token::Verdadero; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 60 "ExprLexerImpl.l"
-{ return Token::Falso; }
+{ *lval = new BoolVarExpr(0); return Token::Falso; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP

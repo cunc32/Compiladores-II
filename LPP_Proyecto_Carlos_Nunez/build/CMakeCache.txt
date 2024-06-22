@@ -148,7 +148,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Expr
+CMAKE_PROJECT_NAME:STATIC=miniLpp
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -232,6 +232,15 @@ FL_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libfl.so
 
 //Path to a program.
 TREECC:FILEPATH=/usr/local/bin/treecc
+
+//Value Computed by CMake
+miniLpp_BINARY_DIR:STATIC=/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/build
+
+//Value Computed by CMake
+miniLpp_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+miniLpp_SOURCE_DIR:STATIC=/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez
 
 
 ########################

@@ -2,6 +2,9 @@
 
 %decls %{
     #include <string>
+    #include <algorithm>
+    #include <stdexcept>
+    #include <cctype>
     #include <unordered_map> 
     #include <iostream>
     #include <typeinfo>
@@ -15,8 +18,11 @@
 	#include "ExprAst.hpp"
 
 	int offset = 0;
+    int baseMem = 10000000;
     stdstring func = "";
     SymbolVector variables;
+    SymbolVector varTypes;
+    SymbolVector cTypes;
 
     void resetOffset() {
         offset = 0;
@@ -26,6 +32,15 @@
 	{
 	    offset = pointer;
 	}
+
+    stdstring insertTempString(stdstring str) {
+        stdstring resultCode = "";
+        for (int i = 0; i < str.length(); i++) {
+            resultCode += "\n\tmov [0x" + std::to_string(baseMem+i) +"], " + std::to_string((int)str.at(i));
+        }
+        resultCode += "\n\tmov [0x" + std::to_string(baseMem+str.length()) + "], 0";
+        return resultCode;
+    }
 
 	int getOffset(){
 		return offset;
@@ -46,10 +61,16 @@
 
 %node Program Node = {
     DefBlockStmt *defStmts;
+    FuncDefBlock *funcBlock;
     Stmt *stmts;
 }
 
-%node FuncDefStmt Node = {
+%node FuncDefBlock Stmt = {
+    FuncDefBlock *funcBlock;
+    Stmt *stmt;
+}
+
+%node FuncDefStmt Stmt = {
     IdExpr *funcName;
     ParamList *params;
     Stmt *stmts;
@@ -68,6 +89,14 @@
     stdstring id;
 }
 
+%node BoolVarExpr Expr = {
+    int value;
+}
+
+%node CharExpr Expr = {
+    int value;
+}
+
 %node StrExpr Expr = {
     stdstring value;
 }
@@ -82,6 +111,7 @@
 %node NeExpr BinaryExpr
 
 %node Stmt Node %abstract %typedef
+%node DefExpr Expr %abstract %typedef
 
 %node BlockStmt Stmt = {
     Node *stmt1;
@@ -94,16 +124,16 @@
 }
 
 %node DefStmt Stmt = {
-    // aqui iria el tipo
+    StrExpr *varType;
     DefList *varlist;
 }
 
-%node DefList Expr = {
-    Expr *varList;
-    Expr *newVar;
+%node DefList DefExpr = {
+    DefList *varList;
+    DefVar *newVar;
 }
 
-%node DefVar Expr = {
+%node DefVar DefExpr = {
     IdExpr *newVar;
 }
 
@@ -116,7 +146,7 @@
     IdExpr *id;
 }
 
-%node PrintIntStmt Stmt = {
+%node PrintExprStmt Stmt = {
     Expr *expr;
 }
 
@@ -162,6 +192,7 @@
 
 // %operation %virtual stdstring genProgramCode(Node *node, SymbolVector symbs);
 %operation %virtual stdstring genProgramCode(Node *node);
+%operation %virtual stdstring genDefCode(DefExpr *node, stdstring type);
 
 genProgramCode(Program) {
     stdstring defStmts = "";
@@ -196,6 +227,16 @@ genProgramCode(NumExpr) {
 
 genProgramCode(IdExpr) {
     node->place = variables[node->id];
+    return "";
+}
+
+genProgramCode(BoolVarExpr) {
+    node->place = std::to_string(node->value);
+    return "";
+}
+
+genProgramCode(CharExpr) {
+    node->place = std::to_string(node->value);
     return "";
 }
 
@@ -311,7 +352,7 @@ genProgramCode(GETExpr) {
 
     node->code += "\n\tmov edx, " + node->expr1->place;
     node->code += "\n\tcmp edx, " + node->expr2->place;
-    node->code += "\n\tjg greatere" + std::to_string(offset);
+    node->code += "\n\tjge greatere" + std::to_string(offset);
     node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
     node->code += "\n\tjmp ngreatere"+std::to_string(offset)+"\n\ngreatere"+std::to_string(offset)+":";
     node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 1\n\nngreatere"+std::to_string(offset)+":";
@@ -367,20 +408,48 @@ genProgramCode(BlockStmt) {
     return node->code;
 }
 
-genProgramCode(PrintIntStmt) {
+genProgramCode(FuncDefBlock) {    
+    stdstring funcBlock = node->funcBlock->genProgramCode();
+    stdstring stmt = node->stmt->genProgramCode();
+
+    node->code = funcBlock + stmt;
+
+    return node->code;
+}
+
+genProgramCode(PrintExprStmt) {
+    int offset = addOffset();
     stdstring s1 = node->expr->genProgramCode();
 
-    node->code = s1 + "\n"; 
+    node->code = s1 + "\n";
 
-    node->code += "\n\tmov eax, 1";
-    node->code += "\n\tmov ebx, " + node->expr->place;
-    node->code += "\n\tint 0x80";
+    // std::cout << "Imprimiendo variable tipo: " << varTypes[node->expr->place] << " ubicada en la memoria: " << node->expr->place << std::endl;
+    if (varTypes[node->expr->place] == "BOOLEANO") {
+        node->code += "\n\tmov eax, " + node->expr->place;
+        node->code += "\n\tcmp eax, 1";
+        node->code += "\n\tje verdadero" + std::to_string(offset);
+        node->code += insertTempString("Falso");
+        node->code += "\n\tjmp cprint" + std::to_string(offset);
+        node->code += "\nverdadero" + std::to_string(offset) + ":";
+        node->code += insertTempString("Verdadero");
+        node->code += "\ncprint" + std::to_string(offset) + ":";
+        node->code += "\n\tmov eax, 4";
+        node->code += "\n\tlea ebx, [0x"+std::to_string(baseMem)+"]";
+        node->code += "\n\tint 0x80";
+    } else if (varTypes[node->expr->place] == "CARACTER") {
+        node->code += "\n\tmov eax, 11";
+        node->code += "\n\tmov ebx," + node->expr->place;
+        node->code += "\n\tint 0x80";
+    } else {
+        node->code += "\n\tmov eax, 1";
+        node->code += "\n\tmov ebx, " + node->expr->place;
+        node->code += "\n\tint 0x80";
+    }
 
     node->code += "\n\tmov eax, 11";
     node->code += "\n\tmov ebx, 10";
     node->code += "\n\tint 0x80";
     
-
     return node->code;
 }
 
@@ -408,11 +477,11 @@ genProgramCode(PrintStrStmt) {
 
     node->code = s1 + "\n"; 
     
-    std::cout << "Esto es lo que viene en el string: " << node->expr->place << std::endl;
+    // std::cout << "Esto es lo que viene en el string: " << node->expr->place << std::endl;
 
-    node->code += "\n#set byte [0x10000000] = [\"" + node->expr->place + "\", 0]";
+    node->code += insertTempString(node->expr->place);
     node->code += "\n\tmov eax, 4";
-    node->code += "\n\tlea ebx, [0x10000000]";
+    node->code += "\n\tlea ebx, [0x"+std::to_string(baseMem)+"]";
     node->code += "\n\tint 0x80";
 
     node->code += "\n\tmov eax, 11";
@@ -433,7 +502,6 @@ genProgramCode(IfStmt) {
     }
 
     node->code = cond + "\n";
-    std::cout << "if no. " << offset << std::endl;
 
     node->code += "\n\tmov edx, 1";
     node->code += "\n\tcmp edx, " + node->cond->place;
@@ -517,23 +585,6 @@ genProgramCode(ForStmt) {
     return node->code;
 }
 
-genProgramCode(DefList) {
-    stdstring vList = node->varList->genProgramCode();
-    stdstring nVar = node->newVar->genProgramCode();
-
-    node->code = vList + "\n" + nVar;
-
-    return node->code;
-}
-
-genProgramCode(DefVar) {
-    variables[node->newVar->id] = "dword [ebp + " + std::to_string(addOffset()) + "]";
-    node->place = variables[node->newVar->id];
-    node->code = "\tpush eax";
-    // std::cout << "alocating variable: " << node->newVar->id << " in position " << variables[node->newVar->id] << std::endl;
-    return node->code;
-}
-
 genProgramCode(DefBlockStmt) {
     stdstring dList = node->defList->genProgramCode();
     stdstring stmt = node->stmt->genProgramCode();
@@ -545,9 +596,35 @@ genProgramCode(DefBlockStmt) {
 }
 
 genProgramCode(DefStmt) {
-    stdstring code = node->varlist->genProgramCode();
+    stdstring type = node->varType->genProgramCode();
+    stdstring code = node->varlist->genDefCode(node->varType->place);
     // std::cout << "DefStmt" << std::endl;
+    // for (auto const& i : varTypes) {
+    //     std::cout << "Variable: " << i.first << " de tipo: " << i.second << std::endl;
+    // }
     node->code = code;
+    return node->code;
+}
+
+genProgramCode(DefList) { return ""; }
+genProgramCode(DefVar) { return ""; }
+
+genDefCode(DefList) {
+    stdstring vList = node->varList->genDefCode(type);
+    stdstring nVar = node->newVar->genDefCode(type);
+
+    node->code = vList + "\n" + nVar;
+
+    return node->code;
+}
+
+genDefCode(DefVar) {
+    variables[node->newVar->id] = "dword [ebp + " + std::to_string(addOffset()) + "]";
+    node->place = variables[node->newVar->id];
+    std::transform(type.begin(), type.end(), type.begin(), ::toupper);
+    varTypes[node->place] = type;
+    node->code = "\tpush eax";
+    // std::cout << "alocating variable: " << node->newVar->id << " in position " << variables[node->newVar->id] << std::endl;
     return node->code;
 }
 
@@ -573,6 +650,20 @@ genProgramCode(AssignStmt) {
     // std::cout << "Escribiendo en assign: " << node->value->place << std::endl;
     stdstring expr = node->value->genProgramCode();
     // variables[node->varName->id] = std::stoi(node->value->place);
+
+    // if (varTypes[node->varName->id] == BoolVarExpr)
+    // std::cout << varTypes[variables[node->varName->id]] << std::endl;
+    // std::cout << dynamic_cast<Expr*>(node->value) << std::endl;
+
+    if (dynamic_cast<CharExpr*>(node->value) != 0 && varTypes[variables[node->varName->id]] != "CARACTER") {
+        throw std::runtime_error("La variable "+node->varName->id+" no es de tipo caracter");
+    } else if (dynamic_cast<BoolVarExpr*>(node->value) != 0 && varTypes[variables[node->varName->id]] != "BOOLEANO") {
+        throw std::runtime_error("La variable "+node->varName->id+" no es de tipo booleano");
+    } else if (!(dynamic_cast<CharExpr*>(node->value) != 0 || dynamic_cast<BoolVarExpr*>(node->value) != 0) &&
+    dynamic_cast<Expr*>(node->value) != 0 && varTypes[variables[node->varName->id]] != "ENTERO") {
+        throw std::runtime_error("La variable "+node->varName->id+" no es de tipo entero");
+    }
+    
 
     node->code = expr + "\n";
 

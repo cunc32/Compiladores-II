@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Expr
+# Target rules for targets named miniLpp
 
 # Build rule for target.
-Expr: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Expr
-.PHONY : Expr
+miniLpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 miniLpp
+.PHONY : miniLpp
 
 # fast build rule for target.
-Expr/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/build
-.PHONY : Expr/fast
+miniLpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/build
+.PHONY : miniLpp/fast
 
 ExprAst.o: ExprAst.cpp.o
 .PHONY : ExprAst.o
 
 # target to build an object file
 ExprAst.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprAst.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprAst.cpp.o
 .PHONY : ExprAst.cpp.o
 
 ExprAst.i: ExprAst.cpp.i
@@ -142,7 +142,7 @@ ExprAst.i: ExprAst.cpp.i
 
 # target to preprocess a source file
 ExprAst.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprAst.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprAst.cpp.i
 .PHONY : ExprAst.cpp.i
 
 ExprAst.s: ExprAst.cpp.s
@@ -150,7 +150,7 @@ ExprAst.s: ExprAst.cpp.s
 
 # target to generate assembly for a file
 ExprAst.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprAst.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprAst.cpp.s
 .PHONY : ExprAst.cpp.s
 
 ExprLexer.o: ExprLexer.cpp.o
@@ -158,7 +158,7 @@ ExprLexer.o: ExprLexer.cpp.o
 
 # target to build an object file
 ExprLexer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprLexer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprLexer.cpp.o
 .PHONY : ExprLexer.cpp.o
 
 ExprLexer.i: ExprLexer.cpp.i
@@ -166,7 +166,7 @@ ExprLexer.i: ExprLexer.cpp.i
 
 # target to preprocess a source file
 ExprLexer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprLexer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprLexer.cpp.i
 .PHONY : ExprLexer.cpp.i
 
 ExprLexer.s: ExprLexer.cpp.s
@@ -174,7 +174,7 @@ ExprLexer.s: ExprLexer.cpp.s
 
 # target to generate assembly for a file
 ExprLexer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprLexer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprLexer.cpp.s
 .PHONY : ExprLexer.cpp.s
 
 ExprLexerImpl.o: ExprLexerImpl.cpp.o
@@ -182,7 +182,7 @@ ExprLexerImpl.o: ExprLexerImpl.cpp.o
 
 # target to build an object file
 ExprLexerImpl.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprLexerImpl.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprLexerImpl.cpp.o
 .PHONY : ExprLexerImpl.cpp.o
 
 ExprLexerImpl.i: ExprLexerImpl.cpp.i
@@ -190,7 +190,7 @@ ExprLexerImpl.i: ExprLexerImpl.cpp.i
 
 # target to preprocess a source file
 ExprLexerImpl.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprLexerImpl.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprLexerImpl.cpp.i
 .PHONY : ExprLexerImpl.cpp.i
 
 ExprLexerImpl.s: ExprLexerImpl.cpp.s
@@ -198,7 +198,7 @@ ExprLexerImpl.s: ExprLexerImpl.cpp.s
 
 # target to generate assembly for a file
 ExprLexerImpl.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprLexerImpl.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprLexerImpl.cpp.s
 .PHONY : ExprLexerImpl.cpp.s
 
 ExprParser.o: ExprParser.cpp.o
@@ -206,7 +206,7 @@ ExprParser.o: ExprParser.cpp.o
 
 # target to build an object file
 ExprParser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprParser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprParser.cpp.o
 .PHONY : ExprParser.cpp.o
 
 ExprParser.i: ExprParser.cpp.i
@@ -214,7 +214,7 @@ ExprParser.i: ExprParser.cpp.i
 
 # target to preprocess a source file
 ExprParser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprParser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprParser.cpp.i
 .PHONY : ExprParser.cpp.i
 
 ExprParser.s: ExprParser.cpp.s
@@ -222,7 +222,7 @@ ExprParser.s: ExprParser.cpp.s
 
 # target to generate assembly for a file
 ExprParser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprParser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprParser.cpp.s
 .PHONY : ExprParser.cpp.s
 
 ExprParserImpl.o: ExprParserImpl.cpp.o
@@ -230,7 +230,7 @@ ExprParserImpl.o: ExprParserImpl.cpp.o
 
 # target to build an object file
 ExprParserImpl.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprParserImpl.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprParserImpl.cpp.o
 .PHONY : ExprParserImpl.cpp.o
 
 ExprParserImpl.i: ExprParserImpl.cpp.i
@@ -238,7 +238,7 @@ ExprParserImpl.i: ExprParserImpl.cpp.i
 
 # target to preprocess a source file
 ExprParserImpl.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprParserImpl.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprParserImpl.cpp.i
 .PHONY : ExprParserImpl.cpp.i
 
 ExprParserImpl.s: ExprParserImpl.cpp.s
@@ -246,7 +246,7 @@ ExprParserImpl.s: ExprParserImpl.cpp.s
 
 # target to generate assembly for a file
 ExprParserImpl.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/ExprParserImpl.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/ExprParserImpl.cpp.s
 .PHONY : ExprParserImpl.cpp.s
 
 main.o: main.cpp.o
@@ -254,7 +254,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -262,7 +262,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -270,7 +270,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -281,7 +281,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... Expr"
+	@echo "... miniLpp"
 	@echo "... ExprAst.o"
 	@echo "... ExprAst.i"
 	@echo "... ExprAst.s"

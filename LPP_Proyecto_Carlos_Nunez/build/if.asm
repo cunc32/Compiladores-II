@@ -3,7 +3,7 @@
 prg:
 	push ebp
 	mov ebp, esp
-	sub esp, 48
+	sub esp, 80
 
 
 	mov dword [ebp + 4], 10
@@ -36,18 +36,18 @@ false4:
 
 	mov edx, dword [ebp + 4]
 	cmp edx, 10
-	jg greater12
-	mov dword [ebp - 12], 0
-	jmp ngreater12
+	jg greater16
+	mov dword [ebp - 16], 0
+	jmp ngreater16
 
-greater12:
-	mov dword [ebp - 12], 1
+greater16:
+	mov dword [ebp - 16], 1
 
-ngreater12:
+ngreater16:
 
 	mov edx, 1
-	cmp edx, dword [ebp - 12]
-	jne endelif12
+	cmp edx, dword [ebp - 16]
+	jne endelif20
 
 
 	mov eax, 1
@@ -57,22 +57,22 @@ ngreater12:
 	mov ebx, 10
 	int 0x80
 
-endelif12:
+endelif20:
 
 	mov edx, dword [ebp + 4]
 	cmp edx, 10
-	je equal16
-	mov dword [ebp - 16], 0
-	jmp nequal16
+	je equal24
+	mov dword [ebp - 24], 0
+	jmp nequal24
 
-equal16:
-	mov dword [ebp - 16], 1
+equal24:
+	mov dword [ebp - 24], 1
 
-nequal16:
+nequal24:
 
 	mov edx, 1
-	cmp edx, dword [ebp - 16]
-	jne endelif16
+	cmp edx, dword [ebp - 24]
+	jne endelif28
 
 
 	mov eax, 1
@@ -82,25 +82,25 @@ nequal16:
 	mov ebx, 10
 	int 0x80
 
-endelif16:
+endelif28:
 
 endif4:
 	mov dword [ebp + 4], 5
 
 	mov edx, dword [ebp + 4]
 	cmp edx, 10
-	jl less24
-	mov dword [ebp - 24], 0
-	jmp nless24
+	jl less36
+	mov dword [ebp - 36], 0
+	jmp nless36
 
-less24:
-	mov dword [ebp - 24], 1
+less36:
+	mov dword [ebp - 36], 1
 
-nless24:
+nless36:
 
 	mov edx, 1
-	cmp edx, dword [ebp - 24]
-	jne false20
+	cmp edx, dword [ebp - 36]
+	jne false32
 
 
 	mov eax, 11
@@ -109,102 +109,23 @@ nless24:
 	mov eax, 11
 	mov ebx, 10
 	int 0x80
-	jmp endif20
+	jmp endif32
 
-false20:
-
-	mov edx, dword [ebp + 4]
-	cmp edx, 10
-	jg greater28
-	mov dword [ebp - 28], 0
-	jmp ngreater28
-
-greater28:
-	mov dword [ebp - 28], 1
-
-ngreater28:
-
-	mov edx, 1
-	cmp edx, dword [ebp - 28]
-	jne endelif28
-
-
-	mov eax, 1
-	mov ebx, 100
-	int 0x80
-	mov eax, 11
-	mov ebx, 10
-	int 0x80
-
-endelif28:
+false32:
 
 	mov edx, dword [ebp + 4]
 	cmp edx, 10
-	je equal32
-	mov dword [ebp - 32], 0
-	jmp nequal32
-
-equal32:
-	mov dword [ebp - 32], 1
-
-nequal32:
-
-	mov edx, 1
-	cmp edx, dword [ebp - 32]
-	jne endelif32
-
-
-	mov eax, 1
-	mov ebx, 10
-	int 0x80
-	mov eax, 11
-	mov ebx, 10
-	int 0x80
-
-endelif32:
-
-endif20:
-	mov dword [ebp + 4], 73
-
-	mov edx, dword [ebp + 4]
-	cmp edx, 10
-	jl less40
+	jg greater40
 	mov dword [ebp - 40], 0
-	jmp nless40
+	jmp ngreater40
 
-less40:
+greater40:
 	mov dword [ebp - 40], 1
 
-nless40:
+ngreater40:
 
 	mov edx, 1
 	cmp edx, dword [ebp - 40]
-	jne false36
-
-
-	mov eax, 1
-	mov ebx, 0
-	int 0x80
-	mov eax, 11
-	mov ebx, 10
-	int 0x80
-	jmp endif36
-
-false36:
-
-	mov edx, dword [ebp + 4]
-	cmp edx, 10
-	jg greater44
-	mov dword [ebp - 44], 0
-	jmp ngreater44
-
-greater44:
-	mov dword [ebp - 44], 1
-
-ngreater44:
-
-	mov edx, 1
-	cmp edx, dword [ebp - 44]
 	jne endelif44
 
 
@@ -230,7 +151,7 @@ nequal48:
 
 	mov edx, 1
 	cmp edx, dword [ebp - 48]
-	jne endelif48
+	jne endelif52
 
 
 	mov eax, 1
@@ -240,6 +161,85 @@ nequal48:
 	mov ebx, 10
 	int 0x80
 
-endelif48:
+endelif52:
 
-endif36:
+endif32:
+	mov dword [ebp + 4], 73
+
+	mov edx, dword [ebp + 4]
+	cmp edx, 10
+	jl less60
+	mov dword [ebp - 60], 0
+	jmp nless60
+
+less60:
+	mov dword [ebp - 60], 1
+
+nless60:
+
+	mov edx, 1
+	cmp edx, dword [ebp - 60]
+	jne false56
+
+
+	mov eax, 1
+	mov ebx, 0
+	int 0x80
+	mov eax, 11
+	mov ebx, 10
+	int 0x80
+	jmp endif56
+
+false56:
+
+	mov edx, dword [ebp + 4]
+	cmp edx, 10
+	jg greater68
+	mov dword [ebp - 68], 0
+	jmp ngreater68
+
+greater68:
+	mov dword [ebp - 68], 1
+
+ngreater68:
+
+	mov edx, 1
+	cmp edx, dword [ebp - 68]
+	jne endelif72
+
+
+	mov eax, 1
+	mov ebx, 100
+	int 0x80
+	mov eax, 11
+	mov ebx, 10
+	int 0x80
+
+endelif72:
+
+	mov edx, dword [ebp + 4]
+	cmp edx, 10
+	je equal76
+	mov dword [ebp - 76], 0
+	jmp nequal76
+
+equal76:
+	mov dword [ebp - 76], 1
+
+nequal76:
+
+	mov edx, 1
+	cmp edx, dword [ebp - 76]
+	jne endelif80
+
+
+	mov eax, 1
+	mov ebx, 10
+	int 0x80
+	mov eax, 11
+	mov ebx, 10
+	int 0x80
+
+endelif80:
+
+endif56:

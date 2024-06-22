@@ -4,6 +4,9 @@
 #line 3 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 
     #include <string>
+    #include <algorithm>
+    #include <stdexcept>
+    #include <cctype>
     #include <unordered_map> 
     #include <iostream>
     #include <typeinfo>
@@ -11,55 +14,59 @@
 
     using stdstring = std::string;
     using SymbolVector = std::unordered_map<stdstring, stdstring>;
-#line 15 "ExprAst.hpp"
+#line 18 "ExprAst.hpp"
 
 #include <new>
 
 const int Node_kind = 1;
 const int Expr_kind = 2;
 const int Program_kind = 3;
-const int FuncDefStmt_kind = 4;
-const int Stmt_kind = 17;
-const int BinaryExpr_kind = 5;
-const int NumExpr_kind = 6;
-const int IdExpr_kind = 7;
-const int StrExpr_kind = 8;
-const int DefList_kind = 21;
-const int DefVar_kind = 22;
-const int AddExpr_kind = 9;
-const int SubExpr_kind = 10;
-const int LTExpr_kind = 11;
-const int GTExpr_kind = 12;
-const int LETExpr_kind = 13;
-const int GETExpr_kind = 14;
-const int EqExpr_kind = 15;
-const int NeExpr_kind = 16;
-const int BlockStmt_kind = 18;
-const int DefBlockStmt_kind = 19;
-const int DefStmt_kind = 20;
-const int ParamList_kind = 23;
-const int ParamStmt_kind = 24;
-const int PrintIntStmt_kind = 25;
-const int PrintChStmt_kind = 26;
-const int PrintStrStmt_kind = 27;
-const int IfStmt_kind = 28;
-const int ElseIfStmt_kind = 29;
-const int AssignStmt_kind = 30;
-const int WhileStmt_kind = 31;
-const int DWhileStmt_kind = 32;
-const int ForStmt_kind = 33;
+const int Stmt_kind = 4;
+const int BinaryExpr_kind = 7;
+const int NumExpr_kind = 8;
+const int IdExpr_kind = 9;
+const int BoolVarExpr_kind = 10;
+const int CharExpr_kind = 11;
+const int StrExpr_kind = 12;
+const int DefExpr_kind = 21;
+const int AddExpr_kind = 13;
+const int SubExpr_kind = 14;
+const int LTExpr_kind = 15;
+const int GTExpr_kind = 16;
+const int LETExpr_kind = 17;
+const int GETExpr_kind = 18;
+const int EqExpr_kind = 19;
+const int NeExpr_kind = 20;
+const int DefList_kind = 25;
+const int DefVar_kind = 26;
+const int FuncDefBlock_kind = 5;
+const int FuncDefStmt_kind = 6;
+const int BlockStmt_kind = 22;
+const int DefBlockStmt_kind = 23;
+const int DefStmt_kind = 24;
+const int ParamList_kind = 27;
+const int ParamStmt_kind = 28;
+const int PrintExprStmt_kind = 29;
+const int PrintChStmt_kind = 30;
+const int PrintStrStmt_kind = 31;
+const int IfStmt_kind = 32;
+const int ElseIfStmt_kind = 33;
+const int AssignStmt_kind = 34;
+const int WhileStmt_kind = 35;
+const int DWhileStmt_kind = 36;
+const int ForStmt_kind = 37;
 
 class Node;
 class Expr;
 class Program;
-class FuncDefStmt;
 class Stmt;
 class BinaryExpr;
 class NumExpr;
 class IdExpr;
+class BoolVarExpr;
+class CharExpr;
 class StrExpr;
-class DefList;
-class DefVar;
+class DefExpr;
 class AddExpr;
 class SubExpr;
 class LTExpr;
@@ -68,12 +75,16 @@ class LETExpr;
 class GETExpr;
 class EqExpr;
 class NeExpr;
+class DefList;
+class DefVar;
+class FuncDefBlock;
+class FuncDefStmt;
 class BlockStmt;
 class DefBlockStmt;
 class DefStmt;
 class ParamList;
 class ParamStmt;
-class PrintIntStmt;
+class PrintExprStmt;
 class PrintChStmt;
 class PrintStrStmt;
 class IfStmt;
@@ -96,7 +107,7 @@ private:
 	struct YYNODESTATE_block *blocks__;
 	struct YYNODESTATE_push *push_stack__;
 	int used__;
-#line 100 "ExprAst.hpp"
+#line 111 "ExprAst.hpp"
 private:
 
 	static YYNODESTATE *state__;
@@ -185,11 +196,12 @@ class Program : public Node
 {
 public:
 
-	Program(DefBlockStmt * defStmts, Stmt * stmts);
+	Program(DefBlockStmt * defStmts, FuncDefBlock * funcBlock, Stmt * stmts);
 
 public:
 
 	DefBlockStmt * defStmts;
+	FuncDefBlock * funcBlock;
 	Stmt * stmts;
 
 	virtual stdstring genProgramCode();
@@ -200,29 +212,6 @@ public:
 protected:
 
 	virtual ~Program();
-
-};
-
-class FuncDefStmt : public Node
-{
-public:
-
-	FuncDefStmt(IdExpr * funcName, ParamList * params, Stmt * stmts);
-
-public:
-
-	IdExpr * funcName;
-	ParamList * params;
-	Stmt * stmts;
-
-	virtual stdstring genProgramCode();
-
-	virtual int isA(int kind) const;
-	virtual const char *getKindName() const;
-
-protected:
-
-	virtual ~FuncDefStmt();
 
 };
 
@@ -309,6 +298,48 @@ protected:
 
 };
 
+class BoolVarExpr : public Expr
+{
+public:
+
+	BoolVarExpr(int value);
+
+public:
+
+	int value;
+
+	virtual stdstring genProgramCode();
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~BoolVarExpr();
+
+};
+
+class CharExpr : public Expr
+{
+public:
+
+	CharExpr(int value);
+
+public:
+
+	int value;
+
+	virtual stdstring genProgramCode();
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~CharExpr();
+
+};
+
 class StrExpr : public Expr
 {
 public:
@@ -330,46 +361,23 @@ protected:
 
 };
 
-class DefList : public Expr
+class DefExpr : public Expr
 {
+protected:
+
+	DefExpr();
+
 public:
 
-	DefList(Expr * varList, Expr * newVar);
-
-public:
-
-	Expr * varList;
-	Expr * newVar;
-
-	virtual stdstring genProgramCode();
+	virtual stdstring genProgramCode() = 0;
+	virtual stdstring genDefCode(stdstring type) = 0;
 
 	virtual int isA(int kind) const;
 	virtual const char *getKindName() const;
 
 protected:
 
-	virtual ~DefList();
-
-};
-
-class DefVar : public Expr
-{
-public:
-
-	DefVar(IdExpr * newVar);
-
-public:
-
-	IdExpr * newVar;
-
-	virtual stdstring genProgramCode();
-
-	virtual int isA(int kind) const;
-	virtual const char *getKindName() const;
-
-protected:
-
-	virtual ~DefVar();
+	virtual ~DefExpr();
 
 };
 
@@ -525,6 +533,96 @@ protected:
 
 };
 
+class DefList : public DefExpr
+{
+public:
+
+	DefList(DefList * varList, DefVar * newVar);
+
+public:
+
+	DefList * varList;
+	DefVar * newVar;
+
+	virtual stdstring genProgramCode();
+	virtual stdstring genDefCode(stdstring type);
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~DefList();
+
+};
+
+class DefVar : public DefExpr
+{
+public:
+
+	DefVar(IdExpr * newVar);
+
+public:
+
+	IdExpr * newVar;
+
+	virtual stdstring genProgramCode();
+	virtual stdstring genDefCode(stdstring type);
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~DefVar();
+
+};
+
+class FuncDefBlock : public Stmt
+{
+public:
+
+	FuncDefBlock(FuncDefBlock * funcBlock, Stmt * stmt);
+
+public:
+
+	FuncDefBlock * funcBlock;
+	Stmt * stmt;
+
+	virtual stdstring genProgramCode();
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~FuncDefBlock();
+
+};
+
+class FuncDefStmt : public Stmt
+{
+public:
+
+	FuncDefStmt(IdExpr * funcName, ParamList * params, Stmt * stmts);
+
+public:
+
+	IdExpr * funcName;
+	ParamList * params;
+	Stmt * stmts;
+
+	virtual stdstring genProgramCode();
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~FuncDefStmt();
+
+};
+
 class BlockStmt : public Stmt
 {
 public:
@@ -573,10 +671,11 @@ class DefStmt : public Stmt
 {
 public:
 
-	DefStmt(DefList * varlist);
+	DefStmt(StrExpr * varType, DefList * varlist);
 
 public:
 
+	StrExpr * varType;
 	DefList * varlist;
 
 	virtual stdstring genProgramCode();
@@ -633,11 +732,11 @@ protected:
 
 };
 
-class PrintIntStmt : public Stmt
+class PrintExprStmt : public Stmt
 {
 public:
 
-	PrintIntStmt(Expr * expr);
+	PrintExprStmt(Expr * expr);
 
 public:
 
@@ -650,7 +749,7 @@ public:
 
 protected:
 
-	virtual ~PrintIntStmt();
+	virtual ~PrintExprStmt();
 
 };
 

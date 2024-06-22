@@ -101,10 +101,10 @@ using ParserValueType = Node *;
 
 start: program { parser.createAsm($1->genProgramCode()); }
 
-program: Inicio codeBlock Fin { $$ = new Program((DefBlockStmt*)nullptr, (Stmt*)$2); }
-      | defBlock Inicio codeBlock Fin { $$ = new Program((DefBlockStmt*)$1, (Stmt*)$3); }
+program: Inicio codeBlock Fin { $$ = new Program((DefBlockStmt*)nullptr, (FuncDefBlock*)nullptr, (Stmt*)$2); }
+      | defBlock Inicio codeBlock Fin { $$ = new Program((DefBlockStmt*)$1, (FuncDefBlock*)nullptr, (Stmt*)$3); }
       | defBlock funcsAndProcs Inicio codeBlock Fin
-      | funcsAndProcs Inicio codeBlock Fin
+      | funcsAndProcs Inicio codeBlock Fin { $$ = new Program((DefBlockStmt*)nullptr, (FuncDefBlock*)$1, (Stmt*)$3); }
       | typeBlock Inicio codeBlock Fin
       | typeBlock defBlock Inicio codeBlock Fin
       | typeBlock defBlock funcsAndProcs Inicio codeBlock Fin
@@ -132,7 +132,7 @@ read: Lea id
 write: write Comma Str
       | write Comma expr
       | Escriba Str { $$ = new PrintStrStmt((Expr*)$2); }
-      | Escriba expr { $$ = new PrintIntStmt((Expr*)$2); }
+      | Escriba expr { $$ = new PrintExprStmt((Expr*)$2); }
       | Escriba Char { $$ = new PrintChStmt((Expr*)$2); }
 ;
 
@@ -144,10 +144,10 @@ defType: Type Ident Es varType
       | Type Ident Es DefArr OpenBr expr CloseBr de varType
 ;
 
-varType: DefInt
-      | DefChar
-      | DefBool
-      | Ident
+varType: DefInt { $$ = $1; }
+      | DefChar { $$ = $1; }
+      | DefBool { $$ = $1; }
+      | Ident { $$ = $1; }
 ;
 
 arrId: Ident OpenBr expr CloseBr
@@ -162,16 +162,16 @@ valBool: Verdadero
       | Falso
 ;
 
-simpleDef: simpleDef Comma Ident { $$ = new DefList((DefList*)$1, new DefVar((IdExpr*)$3)); }
-      | varType Ident { $$ = new DefVar((IdExpr*)$2); }
+simpleDefList: simpleDefList Comma Ident { $$ = new DefList((DefList*)$1, new DefVar((IdExpr*)$3)); }
+      | Ident { $$ = new DefVar((IdExpr*)$1); }
 ;
 
-def: simpleDef { $$ = $1; }
+def: varType simpleDefList { $$ = new DefStmt((StrExpr*)$1, (DefList*)$2); }
       | DefArr OpenBr expr CloseBr de varType Ident
 ;
 
 defBlock: defBlock def { $$ = new DefBlockStmt((DefBlockStmt*)$1, (DefStmt*)$2); }
-      | def { $$ = new DefStmt((DefList*)$1); }
+      | def { $$ = $1; }
 ;
 
 paramType: Var varType Ident {}
@@ -250,8 +250,8 @@ structures: repeat { $$ = $1; }
 ;
 
 assign: Ident OppAssign expr { $$ = new AssignStmt((IdExpr*)$1, (Expr*)$3); }
-      | Ident OppAssign valBool
-      | Ident OppAssign Char
+      | Ident OppAssign valBool { $$ = new AssignStmt((IdExpr*)$1, (Expr*)$3); }
+      | Ident OppAssign Char { $$ = new AssignStmt((IdExpr*)$1, (Expr*)$3); }
 ;
 
 arrAssign: arrId OppAssign expr

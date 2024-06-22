@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Expr.dir/all
+all: CMakeFiles/miniLpp.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Expr.dir/clean
+clean: CMakeFiles/miniLpp.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/Expr.dir
+# Target rules for target CMakeFiles/miniLpp.dir
 
 # All Build rule for target.
-CMakeFiles/Expr.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target Expr"
-.PHONY : CMakeFiles/Expr.dir/all
+CMakeFiles/miniLpp.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target miniLpp"
+.PHONY : CMakeFiles/miniLpp.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Expr.dir/rule: cmake_check_build_system
+CMakeFiles/miniLpp.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/build/CMakeFiles 10
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Expr.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/miniLpp.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/build/CMakeFiles 0
-.PHONY : CMakeFiles/Expr.dir/rule
+.PHONY : CMakeFiles/miniLpp.dir/rule
 
 # Convenience name for target.
-Expr: CMakeFiles/Expr.dir/rule
-.PHONY : Expr
+miniLpp: CMakeFiles/miniLpp.dir/rule
+.PHONY : miniLpp
 
 # clean rule for target.
-CMakeFiles/Expr.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Expr.dir/build.make CMakeFiles/Expr.dir/clean
-.PHONY : CMakeFiles/Expr.dir/clean
+CMakeFiles/miniLpp.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/miniLpp.dir/build.make CMakeFiles/miniLpp.dir/clean
+.PHONY : CMakeFiles/miniLpp.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

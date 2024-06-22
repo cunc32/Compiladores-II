@@ -1,6 +1,6 @@
 Caracter x
 
 Inicio
-    x <- 'A'
+    x <- 'H'
     Escriba x
 Fin
