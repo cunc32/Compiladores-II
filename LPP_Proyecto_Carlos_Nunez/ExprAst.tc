@@ -103,12 +103,17 @@
 
 %node AddExpr BinaryExpr
 %node SubExpr BinaryExpr
+%node MulExpr BinaryExpr
+%node DivExpr BinaryExpr
+%node ModExpr BinaryExpr
 %node LTExpr BinaryExpr
 %node GTExpr BinaryExpr
 %node LETExpr BinaryExpr
 %node GETExpr BinaryExpr
 %node EqExpr BinaryExpr
 %node NeExpr BinaryExpr
+%node AndExpr BinaryExpr
+%node OrExpr BinaryExpr
 
 %node Stmt Node %abstract %typedef
 %node DefExpr Expr %abstract %typedef
@@ -261,9 +266,9 @@ genProgramCode(AddExpr) {
 
     node->code = e1 + "\n" + e2;
 
-    node->code += "\n\tmov edx, " + node->expr1->place;
-    node->code += "\n\tadd edx, " + node->expr2->place;
-    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], edx\n";
+    node->code += "\n\tmov ecx, " + node->expr1->place;
+    node->code += "\n\tadd ecx, " + node->expr2->place;
+    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], ecx\n";
     node->place = "dword [ebp - " + std::to_string(offset) + "]";
 
     return node->code;
@@ -277,8 +282,143 @@ genProgramCode(SubExpr) {
 
     node->code = e1 + "\n" + e2;
 
-    node->code += "\n\tmov edx, " + node->expr1->place;
-    node->code += "\n\tsub edx, " + node->expr2->place;
+    node->code += "\n\tmov ecx, " + node->expr1->place;
+    node->code += "\n\tsub ecx, " + node->expr2->place;
+    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], ecx\n";
+    node->place = "dword [ebp - " + std::to_string(offset) + "]";
+
+    return node->code;
+}
+
+genProgramCode(AndExpr) {
+    int offset = addOffset();
+
+    stdstring e1 = node->expr1->genProgramCode();
+    stdstring e2 = node->expr2->genProgramCode();
+
+    // Intento de hacer la parte semantica, PAUSADO por el momento
+    
+    // std::cout << "typeid de node->expr: " << typeid(node->expr1).name() << ", typeid de NumExpr: " << typeid(NumExpr*).name() << std::endl;
+
+    // if (dynamic_cast<NumExpr*>(node->expr1) == 0 &&
+    //      dynamic_cast<IdExpr*>(node->expr1) == 0)
+    //      std::cout << "El objeto si es tipo numero o id" << std::endl;
+
+    node->code = e1 + "\n" + e2;
+
+    node->code += "\n\tmov ecx, " + node->expr1->place;
+    node->code += "\n\tand ecx, " + node->expr2->place;
+    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], ecx\n";
+    node->place = "dword [ebp - " + std::to_string(offset) + "]";
+
+    return node->code;
+}
+
+genProgramCode(OrExpr) {
+    int offset = addOffset();
+
+    stdstring e1 = node->expr1->genProgramCode();
+    stdstring e2 = node->expr2->genProgramCode();
+
+    node->code = e1 + "\n" + e2;
+
+    node->code += "\n\tmov ecx, " + node->expr1->place;
+    node->code += "\n\tor ecx, " + node->expr2->place;
+    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], ecx\n";
+    node->place = "dword [ebp - " + std::to_string(offset) + "]";
+
+    return node->code;
+}
+
+genProgramCode(MulExpr) {
+    int offset = addOffset();
+
+    stdstring e1 = node->expr1->genProgramCode();
+    stdstring e2 = node->expr2->genProgramCode();
+
+    // Intento de hacer la parte semantica, PAUSADO por el momento
+
+    node->code = e1 + "\n" + e2;
+
+    node->code += "\n\tmov eax, " + node->expr1->place;
+    node->code += "\n\tmov ecx, " + node->expr2->place;
+    node->code += "\n\timul ecx";
+    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], eax\n";
+    node->place = "dword [ebp - " + std::to_string(offset) + "]";
+
+    return node->code;
+}
+
+genProgramCode(DivExpr) {
+    int offset = addOffset();
+
+    stdstring e1 = node->expr1->genProgramCode();
+    stdstring e2 = node->expr2->genProgramCode();
+
+    // Intento de hacer la parte semantica, PAUSADO por el momento
+
+    node->code = e1 + "\n" + e2;
+
+    node->code += "\n\tmov eax, " + node->expr1->place;
+    node->code += "\n\tmov ecx, " + node->expr2->place;
+    node->code += "\n\tcdq";
+    node->code += "\n\tcmp eax, 0";
+    node->code += "\n\tjg div"+std::to_string(offset);
+    node->code += "\n\tcmp ecx, 0";
+    node->code += "\n\tjg idiv"+std::to_string(offset);
+    node->code += "\n\tjmp div"+std::to_string(offset+1);
+    node->code += "\n\tidiv"+std::to_string(offset)+":";
+    node->code += "\n\tidiv ecx";
+    node->code += "\n\tjmp enddiv"+std::to_string(offset);
+    node->code += "\n\tdiv"+std::to_string(offset)+":";
+    node->code += "\n\tcmp ecx, 0";
+    node->code += "\n\tjl idiv"+std::to_string(offset);
+    node->code += "\n\tdiv ecx";
+    node->code += "\n\tjmp enddiv"+std::to_string(offset);
+    node->code += "\n\tdiv"+std::to_string(offset+1)+":";
+    node->code += "\n\tmov ebx, -1";
+    node->code += "\n\timul ebx";
+    node->code += "\n\tidiv ecx";
+    node->code += "\n\timul ebx";
+    node->code += "\n\tenddiv"+std::to_string(offset)+":";
+    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], eax\n";
+    node->place = "dword [ebp - " + std::to_string(offset) + "]";
+
+    return node->code;
+}
+
+genProgramCode(ModExpr) {
+    int offset = addOffset();
+
+    stdstring e1 = node->expr1->genProgramCode();
+    stdstring e2 = node->expr2->genProgramCode();
+
+    // Intento de hacer la parte semantica, PAUSADO por el momento
+
+    node->code = e1 + "\n" + e2;
+
+    node->code += "\n\tmov eax, " + node->expr1->place;
+    node->code += "\n\tmov ecx, " + node->expr2->place;
+    node->code += "\n\tcdq";
+    node->code += "\n\tcmp eax, 0";
+    node->code += "\n\tjg div"+std::to_string(offset);
+    node->code += "\n\tcmp ecx, 0";
+    node->code += "\n\tjg idiv"+std::to_string(offset);
+    node->code += "\n\tjmp div"+std::to_string(offset+1);
+    node->code += "\n\tidiv"+std::to_string(offset)+":";
+    node->code += "\n\tidiv ecx";
+    node->code += "\n\tjmp enddiv"+std::to_string(offset);
+    node->code += "\n\tdiv"+std::to_string(offset)+":";
+    node->code += "\n\tcmp ecx, 0";
+    node->code += "\n\tjl idiv"+std::to_string(offset);
+    node->code += "\n\tdiv ecx";
+    node->code += "\n\tjmp enddiv"+std::to_string(offset);
+    node->code += "\n\tdiv"+std::to_string(offset+1)+":";
+    node->code += "\n\tmov ebx, -1";
+    node->code += "\n\timul ebx";
+    node->code += "\n\tidiv ecx";
+    node->code += "\n\timul ebx";
+    node->code += "\n\tenddiv"+std::to_string(offset)+":";
     node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], edx\n";
     node->place = "dword [ebp - " + std::to_string(offset) + "]";
 
@@ -293,8 +433,8 @@ genProgramCode(LTExpr) {
 
     node->code = e1 + "\n" + e2;
 
-    node->code += "\n\tmov edx, " + node->expr1->place;
-    node->code += "\n\tcmp edx, " + node->expr2->place;
+    node->code += "\n\tmov ecx, " + node->expr1->place;
+    node->code += "\n\tcmp ecx, " + node->expr2->place;
     node->code += "\n\tjl less"+std::to_string(offset);
     node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
     node->code += "\n\tjmp nless"+std::to_string(offset)+"\n\nless"+std::to_string(offset)+":";
@@ -312,8 +452,8 @@ genProgramCode(GTExpr) {
 
     node->code = e1 + "\n" + e2;
 
-    node->code += "\n\tmov edx, " + node->expr1->place;
-    node->code += "\n\tcmp edx, " + node->expr2->place;
+    node->code += "\n\tmov ecx, " + node->expr1->place;
+    node->code += "\n\tcmp ecx, " + node->expr2->place;
     node->code += "\n\tjg greater" + std::to_string(offset);
     node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
     node->code += "\n\tjmp ngreater"+std::to_string(offset)+"\n\ngreater"+std::to_string(offset)+":";
@@ -331,8 +471,8 @@ genProgramCode(LETExpr) {
 
     node->code = e1 + "\n" + e2;
 
-    node->code += "\n\tmov edx, " + node->expr1->place;
-    node->code += "\n\tcmp edx, " + node->expr2->place;
+    node->code += "\n\tmov ecx, " + node->expr1->place;
+    node->code += "\n\tcmp ecx, " + node->expr2->place;
     node->code += "\n\tjle lesse"+std::to_string(offset);
     node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
     node->code += "\n\tjmp nlesse"+std::to_string(offset)+"\n\nlesse"+std::to_string(offset)+":";
@@ -350,8 +490,8 @@ genProgramCode(GETExpr) {
 
     node->code = e1 + "\n" + e2;
 
-    node->code += "\n\tmov edx, " + node->expr1->place;
-    node->code += "\n\tcmp edx, " + node->expr2->place;
+    node->code += "\n\tmov ecx, " + node->expr1->place;
+    node->code += "\n\tcmp ecx, " + node->expr2->place;
     node->code += "\n\tjge greatere" + std::to_string(offset);
     node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
     node->code += "\n\tjmp ngreatere"+std::to_string(offset)+"\n\ngreatere"+std::to_string(offset)+":";
@@ -369,8 +509,8 @@ genProgramCode(EqExpr) {
 
     node->code = e1 + "\n" + e2;
 
-    node->code += "\n\tmov edx, " + node->expr1->place;
-    node->code += "\n\tcmp edx, " + node->expr2->place;
+    node->code += "\n\tmov ecx, " + node->expr1->place;
+    node->code += "\n\tcmp ecx, " + node->expr2->place;
     node->code += "\n\tje equal"+std::to_string(offset);
     node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
     node->code += "\n\tjmp nequal"+std::to_string(offset)+"\n\nequal"+std::to_string(offset)+":";
@@ -388,8 +528,8 @@ genProgramCode(NeExpr) {
 
     node->code = e1 + "\n" + e2;
 
-    node->code += "\n\tmov edx, " + node->expr1->place;
-    node->code += "\n\tcmp edx, " + e2;
+    node->code += "\n\tmov ecx, " + node->expr1->place;
+    node->code += "\n\tcmp ecx, " + e2;
     node->code += "\n\tjne notEqual"+std::to_string(offset);
     node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
     node->code += "\n\tjmp equals"+std::to_string(offset)+"\n\nnotEqual:";
@@ -500,11 +640,20 @@ genProgramCode(IfStmt) {
     if (node->stmt2 != nullptr) {
         s2 = node->stmt2->genProgramCode();
     }
+    
+    if (dynamic_cast<IdExpr*>(node->cond) != 0 && varTypes[node->cond->place] != "BOOLEANO") {
+        stdstring varName = "";
+        for (auto const& i : variables) {
+            if (i.second == node->cond->place) 
+                varName = i.first;
+        }
+        throw std::runtime_error("La variable "+varName+" no es de tipo booleano");
+    }
 
     node->code = cond + "\n";
 
-    node->code += "\n\tmov edx, 1";
-    node->code += "\n\tcmp edx, " + node->cond->place;
+    node->code += "\n\tmov ecx, 1";
+    node->code += "\n\tcmp ecx, " + node->cond->place;
     node->code += "\n\tjne false"+std::to_string(offset);
     node->code += "\n" + s1 + "\n\tjmp endif"+std::to_string(offset);
     node->code += "\n\nfalse"+std::to_string(offset)+":";
@@ -520,8 +669,8 @@ genProgramCode(ElseIfStmt) {
 
     node->code = cond + "\n";
 
-    node->code += "\n\tmov edx, 1";
-    node->code += "\n\tcmp edx, " + node->cond->place;
+    node->code += "\n\tmov ecx, 1";
+    node->code += "\n\tcmp ecx, " + node->cond->place;
     node->code += "\n\tjne endelif"+std::to_string(offset);
     node->code += "\n" + s;
     node->code += "\n\nendelif"+std::to_string(offset)+":";
@@ -538,8 +687,8 @@ genProgramCode(WhileStmt) {
 
     node->code = "\nwhile" + std::to_string(offset) + ":";
     node->code += cond;
-    node->code += "\n\tmov edx, 1";
-    node->code += "\n\tcmp edx, " + node->cond->place;
+    node->code += "\n\tmov ecx, 1";
+    node->code += "\n\tcmp ecx, " + node->cond->place;
     node->code += "\n\tjne endwhile" + std::to_string(offset);
     node->code += block + "\n\tjmp while" + std::to_string(offset);
     node->code += "\nendwhile" + std::to_string(offset) + ":";
@@ -555,8 +704,8 @@ genProgramCode(DWhileStmt) {
 
     node->code += "\ndwhile" + std::to_string(offset) + ":";
     node->code += block + "\n" +cond;
-    node->code += "\n\tmov edx, 1";
-    node->code += "\n\tcmp edx, " + node->cond->place;
+    node->code += "\n\tmov ecx, 1";
+    node->code += "\n\tcmp ecx, " + node->cond->place;
     node->code += "\n\tjne dwhile" + std::to_string(offset);
     node->code += "\n\tjmp enddwhile" + std::to_string(offset);
     node->code += "\nenddwhile" + std::to_string(offset) + ":";
@@ -574,8 +723,8 @@ genProgramCode(ForStmt) {
     node->code = assign;
 
     node->code += "\nfor" + std::to_string(offset) + ":";
-    node->code += "\n\tmov edx, " + node->var->place;
-    node->code += "\n\tcmp edx, " + node->cond->place;
+    node->code += "\n\tmov ecx, " + node->var->place;
+    node->code += "\n\tcmp ecx, " + node->cond->place;
     node->code += "\n\tjg endfor" + std::to_string(offset);
     node->code += block;
     node->code += "\n\tadd " + node->var->place + ", 1";
@@ -654,6 +803,9 @@ genProgramCode(AssignStmt) {
     // if (varTypes[node->varName->id] == BoolVarExpr)
     // std::cout << varTypes[variables[node->varName->id]] << std::endl;
     // std::cout << dynamic_cast<Expr*>(node->value) << std::endl;
+    if (varTypes[variables[node->varName->id]].empty()) {
+        throw std::runtime_error("La variable "+node->varName->id+" no ha sido declarada");
+    }
 
     if (dynamic_cast<CharExpr*>(node->value) != 0 && varTypes[variables[node->varName->id]] != "CARACTER") {
         throw std::runtime_error("La variable "+node->varName->id+" no es de tipo caracter");

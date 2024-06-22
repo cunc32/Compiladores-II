@@ -392,7 +392,7 @@ Program::~Program()
 stdstring Program::genProgramCode()
 {
 	Program *node = this;
-#line 197 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 202 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring defStmts = "";
 	    // std::cout << "Primer paso" << std::endl;
@@ -489,7 +489,7 @@ NumExpr::~NumExpr()
 stdstring NumExpr::genProgramCode()
 {
 	NumExpr *node = this;
-#line 223 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 228 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    node->place = std::to_string(node->value);
 	    return "";
@@ -525,7 +525,7 @@ IdExpr::~IdExpr()
 stdstring IdExpr::genProgramCode()
 {
 	IdExpr *node = this;
-#line 228 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 233 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    node->place = variables[node->id];
 	    return "";
@@ -561,7 +561,7 @@ BoolVarExpr::~BoolVarExpr()
 stdstring BoolVarExpr::genProgramCode()
 {
 	BoolVarExpr *node = this;
-#line 233 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 238 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    node->place = std::to_string(node->value);
 	    return "";
@@ -597,7 +597,7 @@ CharExpr::~CharExpr()
 stdstring CharExpr::genProgramCode()
 {
 	CharExpr *node = this;
-#line 238 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 243 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    node->place = std::to_string(node->value);
 	    return "";
@@ -633,7 +633,7 @@ StrExpr::~StrExpr()
 stdstring StrExpr::genProgramCode()
 {
 	StrExpr *node = this;
-#line 243 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 248 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    node->place = node->value;
 	    return "";
@@ -692,7 +692,7 @@ AddExpr::~AddExpr()
 stdstring AddExpr::genProgramCode()
 {
 	AddExpr *node = this;
-#line 248 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 253 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -709,9 +709,9 @@ stdstring AddExpr::genProgramCode()
 	
 	    node->code = e1 + "\n" + e2;
 	
-	    node->code += "\n\tmov edx, " + node->expr1->place;
-	    node->code += "\n\tadd edx, " + node->expr2->place;
-	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], edx\n";
+	    node->code += "\n\tmov ecx, " + node->expr1->place;
+	    node->code += "\n\tadd ecx, " + node->expr2->place;
+	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], ecx\n";
 	    node->place = "dword [ebp - " + std::to_string(offset) + "]";
 	
 	    return node->code;
@@ -746,7 +746,7 @@ SubExpr::~SubExpr()
 stdstring SubExpr::genProgramCode()
 {
 	SubExpr *node = this;
-#line 272 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 277 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -755,9 +755,9 @@ stdstring SubExpr::genProgramCode()
 	
 	    node->code = e1 + "\n" + e2;
 	
-	    node->code += "\n\tmov edx, " + node->expr1->place;
-	    node->code += "\n\tsub edx, " + node->expr2->place;
-	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], edx\n";
+	    node->code += "\n\tmov ecx, " + node->expr1->place;
+	    node->code += "\n\tsub ecx, " + node->expr2->place;
+	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], ecx\n";
 	    node->place = "dword [ebp - " + std::to_string(offset) + "]";
 	
 	    return node->code;
@@ -778,6 +778,191 @@ const char *SubExpr::getKindName() const
 	return "SubExpr";
 }
 
+MulExpr::MulExpr(Expr * expr1, Expr * expr2)
+	: BinaryExpr(expr1, expr2)
+{
+	this->kind__ = MulExpr_kind;
+}
+
+MulExpr::~MulExpr()
+{
+	// not used
+}
+
+stdstring MulExpr::genProgramCode()
+{
+	MulExpr *node = this;
+#line 333 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+	{
+	    int offset = addOffset();
+	
+	    stdstring e1 = node->expr1->genProgramCode();
+	    stdstring e2 = node->expr2->genProgramCode();
+	
+	    // Intento de hacer la parte semantica, PAUSADO por el momento
+	
+	    node->code = e1 + "\n" + e2;
+	
+	    node->code += "\n\tmov eax, " + node->expr1->place;
+	    node->code += "\n\tmov ecx, " + node->expr2->place;
+	    node->code += "\n\timul ecx";
+	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], eax\n";
+	    node->place = "dword [ebp - " + std::to_string(offset) + "]";
+	
+	    return node->code;
+	}
+#line 815 "ExprAst.cpp"
+}
+
+int MulExpr::isA(int kind) const
+{
+	if(kind == MulExpr_kind)
+		return 1;
+	else
+		return BinaryExpr::isA(kind);
+}
+
+const char *MulExpr::getKindName() const
+{
+	return "MulExpr";
+}
+
+DivExpr::DivExpr(Expr * expr1, Expr * expr2)
+	: BinaryExpr(expr1, expr2)
+{
+	this->kind__ = DivExpr_kind;
+}
+
+DivExpr::~DivExpr()
+{
+	// not used
+}
+
+stdstring DivExpr::genProgramCode()
+{
+	DivExpr *node = this;
+#line 352 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+	{
+	    int offset = addOffset();
+	
+	    stdstring e1 = node->expr1->genProgramCode();
+	    stdstring e2 = node->expr2->genProgramCode();
+	
+	    // Intento de hacer la parte semantica, PAUSADO por el momento
+	
+	    node->code = e1 + "\n" + e2;
+	
+	    node->code += "\n\tmov eax, " + node->expr1->place;
+	    node->code += "\n\tmov ecx, " + node->expr2->place;
+	    node->code += "\n\tcdq";
+	    node->code += "\n\tcmp eax, 0";
+	    node->code += "\n\tjg div"+std::to_string(offset);
+	    node->code += "\n\tcmp ecx, 0";
+	    node->code += "\n\tjg idiv"+std::to_string(offset);
+	    node->code += "\n\tjmp div"+std::to_string(offset+1);
+	    node->code += "\n\tidiv"+std::to_string(offset)+":";
+	    node->code += "\n\tidiv ecx";
+	    node->code += "\n\tjmp enddiv"+std::to_string(offset);
+	    node->code += "\n\tdiv"+std::to_string(offset)+":";
+	    node->code += "\n\tcmp ecx, 0";
+	    node->code += "\n\tjl idiv"+std::to_string(offset);
+	    node->code += "\n\tdiv ecx";
+	    node->code += "\n\tjmp enddiv"+std::to_string(offset);
+	    node->code += "\n\tdiv"+std::to_string(offset+1)+":";
+	    node->code += "\n\tmov ebx, -1";
+	    node->code += "\n\timul ebx";
+	    node->code += "\n\tidiv ecx";
+	    node->code += "\n\timul ebx";
+	    node->code += "\n\tenddiv"+std::to_string(offset)+":";
+	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], eax\n";
+	    node->place = "dword [ebp - " + std::to_string(offset) + "]";
+	
+	    return node->code;
+	}
+#line 883 "ExprAst.cpp"
+}
+
+int DivExpr::isA(int kind) const
+{
+	if(kind == DivExpr_kind)
+		return 1;
+	else
+		return BinaryExpr::isA(kind);
+}
+
+const char *DivExpr::getKindName() const
+{
+	return "DivExpr";
+}
+
+ModExpr::ModExpr(Expr * expr1, Expr * expr2)
+	: BinaryExpr(expr1, expr2)
+{
+	this->kind__ = ModExpr_kind;
+}
+
+ModExpr::~ModExpr()
+{
+	// not used
+}
+
+stdstring ModExpr::genProgramCode()
+{
+	ModExpr *node = this;
+#line 390 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+	{
+	    int offset = addOffset();
+	
+	    stdstring e1 = node->expr1->genProgramCode();
+	    stdstring e2 = node->expr2->genProgramCode();
+	
+	    // Intento de hacer la parte semantica, PAUSADO por el momento
+	
+	    node->code = e1 + "\n" + e2;
+	
+	    node->code += "\n\tmov eax, " + node->expr1->place;
+	    node->code += "\n\tmov ecx, " + node->expr2->place;
+	    node->code += "\n\tcdq";
+	    node->code += "\n\tcmp eax, 0";
+	    node->code += "\n\tjg div"+std::to_string(offset);
+	    node->code += "\n\tcmp ecx, 0";
+	    node->code += "\n\tjg idiv"+std::to_string(offset);
+	    node->code += "\n\tjmp div"+std::to_string(offset+1);
+	    node->code += "\n\tidiv"+std::to_string(offset)+":";
+	    node->code += "\n\tidiv ecx";
+	    node->code += "\n\tjmp enddiv"+std::to_string(offset);
+	    node->code += "\n\tdiv"+std::to_string(offset)+":";
+	    node->code += "\n\tcmp ecx, 0";
+	    node->code += "\n\tjl idiv"+std::to_string(offset);
+	    node->code += "\n\tdiv ecx";
+	    node->code += "\n\tjmp enddiv"+std::to_string(offset);
+	    node->code += "\n\tdiv"+std::to_string(offset+1)+":";
+	    node->code += "\n\tmov ebx, -1";
+	    node->code += "\n\timul ebx";
+	    node->code += "\n\tidiv ecx";
+	    node->code += "\n\timul ebx";
+	    node->code += "\n\tenddiv"+std::to_string(offset)+":";
+	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], edx\n";
+	    node->place = "dword [ebp - " + std::to_string(offset) + "]";
+	
+	    return node->code;
+	}
+#line 951 "ExprAst.cpp"
+}
+
+int ModExpr::isA(int kind) const
+{
+	if(kind == ModExpr_kind)
+		return 1;
+	else
+		return BinaryExpr::isA(kind);
+}
+
+const char *ModExpr::getKindName() const
+{
+	return "ModExpr";
+}
+
 LTExpr::LTExpr(Expr * expr1, Expr * expr2)
 	: BinaryExpr(expr1, expr2)
 {
@@ -792,7 +977,7 @@ LTExpr::~LTExpr()
 stdstring LTExpr::genProgramCode()
 {
 	LTExpr *node = this;
-#line 288 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 428 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -801,8 +986,8 @@ stdstring LTExpr::genProgramCode()
 	
 	    node->code = e1 + "\n" + e2;
 	
-	    node->code += "\n\tmov edx, " + node->expr1->place;
-	    node->code += "\n\tcmp edx, " + node->expr2->place;
+	    node->code += "\n\tmov ecx, " + node->expr1->place;
+	    node->code += "\n\tcmp ecx, " + node->expr2->place;
 	    node->code += "\n\tjl less"+std::to_string(offset);
 	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
 	    node->code += "\n\tjmp nless"+std::to_string(offset)+"\n\nless"+std::to_string(offset)+":";
@@ -811,7 +996,7 @@ stdstring LTExpr::genProgramCode()
 	
 	    return node->code;
 	}
-#line 815 "ExprAst.cpp"
+#line 1000 "ExprAst.cpp"
 }
 
 int LTExpr::isA(int kind) const
@@ -841,7 +1026,7 @@ GTExpr::~GTExpr()
 stdstring GTExpr::genProgramCode()
 {
 	GTExpr *node = this;
-#line 307 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 447 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -850,8 +1035,8 @@ stdstring GTExpr::genProgramCode()
 	
 	    node->code = e1 + "\n" + e2;
 	
-	    node->code += "\n\tmov edx, " + node->expr1->place;
-	    node->code += "\n\tcmp edx, " + node->expr2->place;
+	    node->code += "\n\tmov ecx, " + node->expr1->place;
+	    node->code += "\n\tcmp ecx, " + node->expr2->place;
 	    node->code += "\n\tjg greater" + std::to_string(offset);
 	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
 	    node->code += "\n\tjmp ngreater"+std::to_string(offset)+"\n\ngreater"+std::to_string(offset)+":";
@@ -860,7 +1045,7 @@ stdstring GTExpr::genProgramCode()
 	
 	    return node->code;
 	}
-#line 864 "ExprAst.cpp"
+#line 1049 "ExprAst.cpp"
 }
 
 int GTExpr::isA(int kind) const
@@ -890,7 +1075,7 @@ LETExpr::~LETExpr()
 stdstring LETExpr::genProgramCode()
 {
 	LETExpr *node = this;
-#line 326 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 466 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -899,8 +1084,8 @@ stdstring LETExpr::genProgramCode()
 	
 	    node->code = e1 + "\n" + e2;
 	
-	    node->code += "\n\tmov edx, " + node->expr1->place;
-	    node->code += "\n\tcmp edx, " + node->expr2->place;
+	    node->code += "\n\tmov ecx, " + node->expr1->place;
+	    node->code += "\n\tcmp ecx, " + node->expr2->place;
 	    node->code += "\n\tjle lesse"+std::to_string(offset);
 	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
 	    node->code += "\n\tjmp nlesse"+std::to_string(offset)+"\n\nlesse"+std::to_string(offset)+":";
@@ -909,7 +1094,7 @@ stdstring LETExpr::genProgramCode()
 	
 	    return node->code;
 	}
-#line 913 "ExprAst.cpp"
+#line 1098 "ExprAst.cpp"
 }
 
 int LETExpr::isA(int kind) const
@@ -939,7 +1124,7 @@ GETExpr::~GETExpr()
 stdstring GETExpr::genProgramCode()
 {
 	GETExpr *node = this;
-#line 345 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 485 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -948,8 +1133,8 @@ stdstring GETExpr::genProgramCode()
 	
 	    node->code = e1 + "\n" + e2;
 	
-	    node->code += "\n\tmov edx, " + node->expr1->place;
-	    node->code += "\n\tcmp edx, " + node->expr2->place;
+	    node->code += "\n\tmov ecx, " + node->expr1->place;
+	    node->code += "\n\tcmp ecx, " + node->expr2->place;
 	    node->code += "\n\tjge greatere" + std::to_string(offset);
 	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
 	    node->code += "\n\tjmp ngreatere"+std::to_string(offset)+"\n\ngreatere"+std::to_string(offset)+":";
@@ -958,7 +1143,7 @@ stdstring GETExpr::genProgramCode()
 	
 	    return node->code;
 	}
-#line 962 "ExprAst.cpp"
+#line 1147 "ExprAst.cpp"
 }
 
 int GETExpr::isA(int kind) const
@@ -988,7 +1173,7 @@ EqExpr::~EqExpr()
 stdstring EqExpr::genProgramCode()
 {
 	EqExpr *node = this;
-#line 364 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 504 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -997,8 +1182,8 @@ stdstring EqExpr::genProgramCode()
 	
 	    node->code = e1 + "\n" + e2;
 	
-	    node->code += "\n\tmov edx, " + node->expr1->place;
-	    node->code += "\n\tcmp edx, " + node->expr2->place;
+	    node->code += "\n\tmov ecx, " + node->expr1->place;
+	    node->code += "\n\tcmp ecx, " + node->expr2->place;
 	    node->code += "\n\tje equal"+std::to_string(offset);
 	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
 	    node->code += "\n\tjmp nequal"+std::to_string(offset)+"\n\nequal"+std::to_string(offset)+":";
@@ -1007,7 +1192,7 @@ stdstring EqExpr::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1011 "ExprAst.cpp"
+#line 1196 "ExprAst.cpp"
 }
 
 int EqExpr::isA(int kind) const
@@ -1037,7 +1222,7 @@ NeExpr::~NeExpr()
 stdstring NeExpr::genProgramCode()
 {
 	NeExpr *node = this;
-#line 383 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 523 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -1046,8 +1231,8 @@ stdstring NeExpr::genProgramCode()
 	
 	    node->code = e1 + "\n" + e2;
 	
-	    node->code += "\n\tmov edx, " + node->expr1->place;
-	    node->code += "\n\tcmp edx, " + e2;
+	    node->code += "\n\tmov ecx, " + node->expr1->place;
+	    node->code += "\n\tcmp ecx, " + e2;
 	    node->code += "\n\tjne notEqual"+std::to_string(offset);
 	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], 0";
 	    node->code += "\n\tjmp equals"+std::to_string(offset)+"\n\nnotEqual:";
@@ -1056,7 +1241,7 @@ stdstring NeExpr::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1060 "ExprAst.cpp"
+#line 1245 "ExprAst.cpp"
 }
 
 int NeExpr::isA(int kind) const
@@ -1070,6 +1255,106 @@ int NeExpr::isA(int kind) const
 const char *NeExpr::getKindName() const
 {
 	return "NeExpr";
+}
+
+AndExpr::AndExpr(Expr * expr1, Expr * expr2)
+	: BinaryExpr(expr1, expr2)
+{
+	this->kind__ = AndExpr_kind;
+}
+
+AndExpr::~AndExpr()
+{
+	// not used
+}
+
+stdstring AndExpr::genProgramCode()
+{
+	AndExpr *node = this;
+#line 293 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+	{
+	    int offset = addOffset();
+	
+	    stdstring e1 = node->expr1->genProgramCode();
+	    stdstring e2 = node->expr2->genProgramCode();
+	
+	    // Intento de hacer la parte semantica, PAUSADO por el momento
+	    
+	    // std::cout << "typeid de node->expr: " << typeid(node->expr1).name() << ", typeid de NumExpr: " << typeid(NumExpr*).name() << std::endl;
+	
+	    // if (dynamic_cast<NumExpr*>(node->expr1) == 0 &&
+	    //      dynamic_cast<IdExpr*>(node->expr1) == 0)
+	    //      std::cout << "El objeto si es tipo numero o id" << std::endl;
+	
+	    node->code = e1 + "\n" + e2;
+	
+	    node->code += "\n\tmov ecx, " + node->expr1->place;
+	    node->code += "\n\tand ecx, " + node->expr2->place;
+	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], ecx\n";
+	    node->place = "dword [ebp - " + std::to_string(offset) + "]";
+	
+	    return node->code;
+	}
+#line 1299 "ExprAst.cpp"
+}
+
+int AndExpr::isA(int kind) const
+{
+	if(kind == AndExpr_kind)
+		return 1;
+	else
+		return BinaryExpr::isA(kind);
+}
+
+const char *AndExpr::getKindName() const
+{
+	return "AndExpr";
+}
+
+OrExpr::OrExpr(Expr * expr1, Expr * expr2)
+	: BinaryExpr(expr1, expr2)
+{
+	this->kind__ = OrExpr_kind;
+}
+
+OrExpr::~OrExpr()
+{
+	// not used
+}
+
+stdstring OrExpr::genProgramCode()
+{
+	OrExpr *node = this;
+#line 317 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+	{
+	    int offset = addOffset();
+	
+	    stdstring e1 = node->expr1->genProgramCode();
+	    stdstring e2 = node->expr2->genProgramCode();
+	
+	    node->code = e1 + "\n" + e2;
+	
+	    node->code += "\n\tmov ecx, " + node->expr1->place;
+	    node->code += "\n\tor ecx, " + node->expr2->place;
+	    node->code += "\n\tmov dword [ebp - " + std::to_string(offset) + "], ecx\n";
+	    node->place = "dword [ebp - " + std::to_string(offset) + "]";
+	
+	    return node->code;
+	}
+#line 1345 "ExprAst.cpp"
+}
+
+int OrExpr::isA(int kind) const
+{
+	if(kind == OrExpr_kind)
+		return 1;
+	else
+		return BinaryExpr::isA(kind);
+}
+
+const char *OrExpr::getKindName() const
+{
+	return "OrExpr";
 }
 
 DefList::DefList(DefList * varList, DefVar * newVar)
@@ -1088,15 +1373,15 @@ DefList::~DefList()
 stdstring DefList::genProgramCode()
 {
 	DefList *node = this;
-#line 609 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 758 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{ return ""; }
-#line 1094 "ExprAst.cpp"
+#line 1379 "ExprAst.cpp"
 }
 
 stdstring DefList::genDefCode(stdstring type)
 {
 	DefList *node = this;
-#line 612 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 761 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring vList = node->varList->genDefCode(type);
 	    stdstring nVar = node->newVar->genDefCode(type);
@@ -1105,7 +1390,7 @@ stdstring DefList::genDefCode(stdstring type)
 	
 	    return node->code;
 	}
-#line 1109 "ExprAst.cpp"
+#line 1394 "ExprAst.cpp"
 }
 
 int DefList::isA(int kind) const
@@ -1136,15 +1421,15 @@ DefVar::~DefVar()
 stdstring DefVar::genProgramCode()
 {
 	DefVar *node = this;
-#line 610 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 759 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{ return ""; }
-#line 1142 "ExprAst.cpp"
+#line 1427 "ExprAst.cpp"
 }
 
 stdstring DefVar::genDefCode(stdstring type)
 {
 	DefVar *node = this;
-#line 621 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 770 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    variables[node->newVar->id] = "dword [ebp + " + std::to_string(addOffset()) + "]";
 	    node->place = variables[node->newVar->id];
@@ -1154,7 +1439,7 @@ stdstring DefVar::genDefCode(stdstring type)
 	    // std::cout << "alocating variable: " << node->newVar->id << " in position " << variables[node->newVar->id] << std::endl;
 	    return node->code;
 	}
-#line 1158 "ExprAst.cpp"
+#line 1443 "ExprAst.cpp"
 }
 
 int DefVar::isA(int kind) const
@@ -1186,7 +1471,7 @@ FuncDefBlock::~FuncDefBlock()
 stdstring FuncDefBlock::genProgramCode()
 {
 	FuncDefBlock *node = this;
-#line 411 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 551 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{    
 	    stdstring funcBlock = node->funcBlock->genProgramCode();
 	    stdstring stmt = node->stmt->genProgramCode();
@@ -1195,7 +1480,7 @@ stdstring FuncDefBlock::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1199 "ExprAst.cpp"
+#line 1484 "ExprAst.cpp"
 }
 
 int FuncDefBlock::isA(int kind) const
@@ -1228,7 +1513,7 @@ FuncDefStmt::~FuncDefStmt()
 stdstring FuncDefStmt::genProgramCode()
 {
 	FuncDefStmt *node = this;
-#line 213 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 218 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring funcName = node->funcName->genProgramCode();
 	    stdstring params = node->params->genProgramCode();
@@ -1238,7 +1523,7 @@ stdstring FuncDefStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1242 "ExprAst.cpp"
+#line 1527 "ExprAst.cpp"
 }
 
 int FuncDefStmt::isA(int kind) const
@@ -1270,7 +1555,7 @@ BlockStmt::~BlockStmt()
 stdstring BlockStmt::genProgramCode()
 {
 	BlockStmt *node = this;
-#line 402 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 542 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{    
 	    stdstring s1 = node->stmt1->genProgramCode();
 	    stdstring s2 = node->stmt2->genProgramCode();
@@ -1279,7 +1564,7 @@ stdstring BlockStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1283 "ExprAst.cpp"
+#line 1568 "ExprAst.cpp"
 }
 
 int BlockStmt::isA(int kind) const
@@ -1311,7 +1596,7 @@ DefBlockStmt::~DefBlockStmt()
 stdstring DefBlockStmt::genProgramCode()
 {
 	DefBlockStmt *node = this;
-#line 588 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 737 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring dList = node->defList->genProgramCode();
 	    stdstring stmt = node->stmt->genProgramCode();
@@ -1321,7 +1606,7 @@ stdstring DefBlockStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1325 "ExprAst.cpp"
+#line 1610 "ExprAst.cpp"
 }
 
 int DefBlockStmt::isA(int kind) const
@@ -1353,7 +1638,7 @@ DefStmt::~DefStmt()
 stdstring DefStmt::genProgramCode()
 {
 	DefStmt *node = this;
-#line 598 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 747 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring type = node->varType->genProgramCode();
 	    stdstring code = node->varlist->genDefCode(node->varType->place);
@@ -1364,7 +1649,7 @@ stdstring DefStmt::genProgramCode()
 	    node->code = code;
 	    return node->code;
 	}
-#line 1368 "ExprAst.cpp"
+#line 1653 "ExprAst.cpp"
 }
 
 int DefStmt::isA(int kind) const
@@ -1396,7 +1681,7 @@ ParamList::~ParamList()
 stdstring ParamList::genProgramCode()
 {
 	ParamList *node = this;
-#line 631 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 780 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring parList = node->parList->genProgramCode();
 	    stdstring stmt = node->stmt->genProgramCode();
@@ -1405,7 +1690,7 @@ stdstring ParamList::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1409 "ExprAst.cpp"
+#line 1694 "ExprAst.cpp"
 }
 
 int ParamList::isA(int kind) const
@@ -1436,7 +1721,7 @@ ParamStmt::~ParamStmt()
 stdstring ParamStmt::genProgramCode()
 {
 	ParamStmt *node = this;
-#line 640 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 789 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring id = node->id->genProgramCode();
 	
@@ -1444,7 +1729,7 @@ stdstring ParamStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1448 "ExprAst.cpp"
+#line 1733 "ExprAst.cpp"
 }
 
 int ParamStmt::isA(int kind) const
@@ -1475,7 +1760,7 @@ PrintExprStmt::~PrintExprStmt()
 stdstring PrintExprStmt::genProgramCode()
 {
 	PrintExprStmt *node = this;
-#line 420 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 560 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	    stdstring s1 = node->expr->genProgramCode();
@@ -1511,7 +1796,7 @@ stdstring PrintExprStmt::genProgramCode()
 	    
 	    return node->code;
 	}
-#line 1515 "ExprAst.cpp"
+#line 1800 "ExprAst.cpp"
 }
 
 int PrintExprStmt::isA(int kind) const
@@ -1542,7 +1827,7 @@ PrintChStmt::~PrintChStmt()
 stdstring PrintChStmt::genProgramCode()
 {
 	PrintChStmt *node = this;
-#line 456 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 596 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring s1 = node->expr->genProgramCode();
 	
@@ -1561,7 +1846,7 @@ stdstring PrintChStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1565 "ExprAst.cpp"
+#line 1850 "ExprAst.cpp"
 }
 
 int PrintChStmt::isA(int kind) const
@@ -1592,7 +1877,7 @@ PrintStrStmt::~PrintStrStmt()
 stdstring PrintStrStmt::genProgramCode()
 {
 	PrintStrStmt *node = this;
-#line 475 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 615 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring s1 = node->expr->genProgramCode();
 	
@@ -1612,7 +1897,7 @@ stdstring PrintStrStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1616 "ExprAst.cpp"
+#line 1901 "ExprAst.cpp"
 }
 
 int PrintStrStmt::isA(int kind) const
@@ -1645,7 +1930,7 @@ IfStmt::~IfStmt()
 stdstring IfStmt::genProgramCode()
 {
 	IfStmt *node = this;
-#line 495 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 635 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	    stdstring cond = node->cond->genProgramCode();
@@ -1654,11 +1939,20 @@ stdstring IfStmt::genProgramCode()
 	    if (node->stmt2 != nullptr) {
 	        s2 = node->stmt2->genProgramCode();
 	    }
+	    
+	    if (dynamic_cast<IdExpr*>(node->cond) != 0 && varTypes[node->cond->place] != "BOOLEANO") {
+	        stdstring varName = "";
+	        for (auto const& i : variables) {
+	            if (i.second == node->cond->place) 
+	                varName = i.first;
+	        }
+	        throw std::runtime_error("La variable "+varName+" no es de tipo booleano");
+	    }
 	
 	    node->code = cond + "\n";
 	
-	    node->code += "\n\tmov edx, 1";
-	    node->code += "\n\tcmp edx, " + node->cond->place;
+	    node->code += "\n\tmov ecx, 1";
+	    node->code += "\n\tcmp ecx, " + node->cond->place;
 	    node->code += "\n\tjne false"+std::to_string(offset);
 	    node->code += "\n" + s1 + "\n\tjmp endif"+std::to_string(offset);
 	    node->code += "\n\nfalse"+std::to_string(offset)+":";
@@ -1667,7 +1961,7 @@ stdstring IfStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1671 "ExprAst.cpp"
+#line 1965 "ExprAst.cpp"
 }
 
 int IfStmt::isA(int kind) const
@@ -1699,22 +1993,22 @@ ElseIfStmt::~ElseIfStmt()
 stdstring ElseIfStmt::genProgramCode()
 {
 	ElseIfStmt *node = this;
-#line 517 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 666 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring cond = node->cond->genProgramCode();
 	    stdstring s = node->stmt->genProgramCode();
 	
 	    node->code = cond + "\n";
 	
-	    node->code += "\n\tmov edx, 1";
-	    node->code += "\n\tcmp edx, " + node->cond->place;
+	    node->code += "\n\tmov ecx, 1";
+	    node->code += "\n\tcmp ecx, " + node->cond->place;
 	    node->code += "\n\tjne endelif"+std::to_string(offset);
 	    node->code += "\n" + s;
 	    node->code += "\n\nendelif"+std::to_string(offset)+":";
 	
 	    return node->code;
 	}
-#line 1718 "ExprAst.cpp"
+#line 2012 "ExprAst.cpp"
 }
 
 int ElseIfStmt::isA(int kind) const
@@ -1746,7 +2040,7 @@ AssignStmt::~AssignStmt()
 stdstring AssignStmt::genProgramCode()
 {
 	AssignStmt *node = this;
-#line 648 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 797 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int pre_offset = offset;
 	    // std::cout << "Escribiendo en assign: " << node->value->place << std::endl;
@@ -1756,6 +2050,9 @@ stdstring AssignStmt::genProgramCode()
 	    // if (varTypes[node->varName->id] == BoolVarExpr)
 	    // std::cout << varTypes[variables[node->varName->id]] << std::endl;
 	    // std::cout << dynamic_cast<Expr*>(node->value) << std::endl;
+	    if (varTypes[variables[node->varName->id]].empty()) {
+	        throw std::runtime_error("La variable "+node->varName->id+" no ha sido declarada");
+	    }
 	
 	    if (dynamic_cast<CharExpr*>(node->value) != 0 && varTypes[variables[node->varName->id]] != "CARACTER") {
 	        throw std::runtime_error("La variable "+node->varName->id+" no es de tipo caracter");
@@ -1781,7 +2078,7 @@ stdstring AssignStmt::genProgramCode()
 	    setOffset(pre_offset);
 	    return node->code;
 	}
-#line 1785 "ExprAst.cpp"
+#line 2082 "ExprAst.cpp"
 }
 
 int AssignStmt::isA(int kind) const
@@ -1813,7 +2110,7 @@ WhileStmt::~WhileStmt()
 stdstring WhileStmt::genProgramCode()
 {
 	WhileStmt *node = this;
-#line 532 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 681 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -1823,15 +2120,15 @@ stdstring WhileStmt::genProgramCode()
 	
 	    node->code = "\nwhile" + std::to_string(offset) + ":";
 	    node->code += cond;
-	    node->code += "\n\tmov edx, 1";
-	    node->code += "\n\tcmp edx, " + node->cond->place;
+	    node->code += "\n\tmov ecx, 1";
+	    node->code += "\n\tcmp ecx, " + node->cond->place;
 	    node->code += "\n\tjne endwhile" + std::to_string(offset);
 	    node->code += block + "\n\tjmp while" + std::to_string(offset);
 	    node->code += "\nendwhile" + std::to_string(offset) + ":";
 	
 	    return node->code;
 	}
-#line 1835 "ExprAst.cpp"
+#line 2132 "ExprAst.cpp"
 }
 
 int WhileStmt::isA(int kind) const
@@ -1863,7 +2160,7 @@ DWhileStmt::~DWhileStmt()
 stdstring DWhileStmt::genProgramCode()
 {
 	DWhileStmt *node = this;
-#line 550 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 699 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -1872,15 +2169,15 @@ stdstring DWhileStmt::genProgramCode()
 	
 	    node->code += "\ndwhile" + std::to_string(offset) + ":";
 	    node->code += block + "\n" +cond;
-	    node->code += "\n\tmov edx, 1";
-	    node->code += "\n\tcmp edx, " + node->cond->place;
+	    node->code += "\n\tmov ecx, 1";
+	    node->code += "\n\tcmp ecx, " + node->cond->place;
 	    node->code += "\n\tjne dwhile" + std::to_string(offset);
 	    node->code += "\n\tjmp enddwhile" + std::to_string(offset);
 	    node->code += "\nenddwhile" + std::to_string(offset) + ":";
 	
 	    return node->code;
 	}
-#line 1884 "ExprAst.cpp"
+#line 2181 "ExprAst.cpp"
 }
 
 int DWhileStmt::isA(int kind) const
@@ -1913,7 +2210,7 @@ ForStmt::~ForStmt()
 stdstring ForStmt::genProgramCode()
 {
 	ForStmt *node = this;
-#line 567 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 716 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -1924,8 +2221,8 @@ stdstring ForStmt::genProgramCode()
 	    node->code = assign;
 	
 	    node->code += "\nfor" + std::to_string(offset) + ":";
-	    node->code += "\n\tmov edx, " + node->var->place;
-	    node->code += "\n\tcmp edx, " + node->cond->place;
+	    node->code += "\n\tmov ecx, " + node->var->place;
+	    node->code += "\n\tcmp ecx, " + node->cond->place;
 	    node->code += "\n\tjg endfor" + std::to_string(offset);
 	    node->code += block;
 	    node->code += "\n\tadd " + node->var->place + ", 1";
@@ -1934,7 +2231,7 @@ stdstring ForStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1938 "ExprAst.cpp"
+#line 2235 "ExprAst.cpp"
 }
 
 int ForStmt::isA(int kind) const

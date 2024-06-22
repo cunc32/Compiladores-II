@@ -92,7 +92,7 @@
 ","         { return Token::Comma; }
 "0x"([0-9a-fA-F])+  { return Token::Hex; }
 "0b"[0-1]+          { return Token::Binary; }
-[0-9]+(\.[0-9]+)?	{ *lval = new NumExpr(std::atof(yytext)); return Token::Number; }
+[-]?[0-9]+(\.[0-9]+)?	{ *lval = new NumExpr(std::atof(yytext)); return Token::Number; }
 [a-zA-Z_][a-zA-Z0-9_]*	{ *lval = new IdExpr(std::string(yytext)); return Token::Ident; }
 .		{ std::cerr << "Invalid symbol: " << yytext[0] << '\n'; return Token::Error; }
 

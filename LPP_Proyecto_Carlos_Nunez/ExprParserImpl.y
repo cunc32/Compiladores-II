@@ -17,7 +17,7 @@
 void yyerror(const ExprParser& parser, const char *msg)
 {
       std::cout << "Line no.:" << (const_cast<ExprParser&>(parser)).getLexer().getLine() << std::endl;
-      std::cout << "Column no.: " << (const_cast<ExprParser&>(parser)).getLexer().getColumn() << std::endl;
+      // std::cout << "Column no.: " << (const_cast<ExprParser&>(parser)).getLexer().getColumn() << std::endl;
       throw std::runtime_error(msg);
 }
 
@@ -268,27 +268,30 @@ expr: expr OpAdd term { $$ = new AddExpr((Expr*)$1, (Expr*)$3); }
       | term { $$ = $1; }
 ;
 
-term: term OpMult factor { }
-      | term OpDiv factor { }
+term: term OpMult factor { $$ = new MulExpr((Expr*)$1, (Expr*)$3); }
+      | term OpDiv factor { $$ = new DivExpr((Expr*)$1, (Expr*)$3); }
       | term OpMod factor { }
       | factor { $$ = $1; }
 ;
 
-factor: OpenPar expr ClosePar { }
+factor: OpenPar expr ClosePar { $$ = $2; }
       | Number { $$ = $1; }
+      | OpSub Number { $$ = new SubExpr(((Expr*)new NumExpr(0)), (Expr*)$2); }
+      | OpSub id { $$ = new SubExpr(((Expr*)new NumExpr(0)), (Expr*)$2); }
       | id  { $$ = $1; } /* Revisar tabla existente si no existe es nueva variable */
 ;
 
-boolExpr: boolExpr O boolTerm { }
+boolExpr: boolExpr O boolTerm { $$ = new OrExpr((Expr*)$1, (Expr*)$3); }
       | boolTerm { $$ = $1; }
 ;
 
-boolTerm: boolTerm Y boolFactor { }
+boolTerm: boolTerm Y boolFactor { $$ = new AndExpr((Expr*)$1, (Expr*)$3); }
       | boolFactor { $$ = $1; }
 ;
 
-boolFactor: OpenPar boolExpr ClosePar { }
+boolFactor: OpenPar boolExpr ClosePar { $$ = $2; }
       | boolOperation { $$ = $1; }
+      | Ident { $$ = $1; }
 ;
 
 boolOperation: expr OpEq expr { $$ = new EqExpr((Expr*)$1, (Expr*)$3); }

@@ -28,33 +28,38 @@ const int IdExpr_kind = 9;
 const int BoolVarExpr_kind = 10;
 const int CharExpr_kind = 11;
 const int StrExpr_kind = 12;
-const int DefExpr_kind = 21;
+const int DefExpr_kind = 26;
 const int AddExpr_kind = 13;
 const int SubExpr_kind = 14;
-const int LTExpr_kind = 15;
-const int GTExpr_kind = 16;
-const int LETExpr_kind = 17;
-const int GETExpr_kind = 18;
-const int EqExpr_kind = 19;
-const int NeExpr_kind = 20;
-const int DefList_kind = 25;
-const int DefVar_kind = 26;
+const int MulExpr_kind = 15;
+const int DivExpr_kind = 16;
+const int ModExpr_kind = 17;
+const int LTExpr_kind = 18;
+const int GTExpr_kind = 19;
+const int LETExpr_kind = 20;
+const int GETExpr_kind = 21;
+const int EqExpr_kind = 22;
+const int NeExpr_kind = 23;
+const int AndExpr_kind = 24;
+const int OrExpr_kind = 25;
+const int DefList_kind = 30;
+const int DefVar_kind = 31;
 const int FuncDefBlock_kind = 5;
 const int FuncDefStmt_kind = 6;
-const int BlockStmt_kind = 22;
-const int DefBlockStmt_kind = 23;
-const int DefStmt_kind = 24;
-const int ParamList_kind = 27;
-const int ParamStmt_kind = 28;
-const int PrintExprStmt_kind = 29;
-const int PrintChStmt_kind = 30;
-const int PrintStrStmt_kind = 31;
-const int IfStmt_kind = 32;
-const int ElseIfStmt_kind = 33;
-const int AssignStmt_kind = 34;
-const int WhileStmt_kind = 35;
-const int DWhileStmt_kind = 36;
-const int ForStmt_kind = 37;
+const int BlockStmt_kind = 27;
+const int DefBlockStmt_kind = 28;
+const int DefStmt_kind = 29;
+const int ParamList_kind = 32;
+const int ParamStmt_kind = 33;
+const int PrintExprStmt_kind = 34;
+const int PrintChStmt_kind = 35;
+const int PrintStrStmt_kind = 36;
+const int IfStmt_kind = 37;
+const int ElseIfStmt_kind = 38;
+const int AssignStmt_kind = 39;
+const int WhileStmt_kind = 40;
+const int DWhileStmt_kind = 41;
+const int ForStmt_kind = 42;
 
 class Node;
 class Expr;
@@ -69,12 +74,17 @@ class StrExpr;
 class DefExpr;
 class AddExpr;
 class SubExpr;
+class MulExpr;
+class DivExpr;
+class ModExpr;
 class LTExpr;
 class GTExpr;
 class LETExpr;
 class GETExpr;
 class EqExpr;
 class NeExpr;
+class AndExpr;
+class OrExpr;
 class DefList;
 class DefVar;
 class FuncDefBlock;
@@ -107,7 +117,7 @@ private:
 	struct YYNODESTATE_block *blocks__;
 	struct YYNODESTATE_push *push_stack__;
 	int used__;
-#line 111 "ExprAst.hpp"
+#line 121 "ExprAst.hpp"
 private:
 
 	static YYNODESTATE *state__;
@@ -419,6 +429,63 @@ protected:
 
 };
 
+class MulExpr : public BinaryExpr
+{
+public:
+
+	MulExpr(Expr * expr1, Expr * expr2);
+
+public:
+
+	virtual stdstring genProgramCode();
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~MulExpr();
+
+};
+
+class DivExpr : public BinaryExpr
+{
+public:
+
+	DivExpr(Expr * expr1, Expr * expr2);
+
+public:
+
+	virtual stdstring genProgramCode();
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~DivExpr();
+
+};
+
+class ModExpr : public BinaryExpr
+{
+public:
+
+	ModExpr(Expr * expr1, Expr * expr2);
+
+public:
+
+	virtual stdstring genProgramCode();
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~ModExpr();
+
+};
+
 class LTExpr : public BinaryExpr
 {
 public:
@@ -530,6 +597,44 @@ public:
 protected:
 
 	virtual ~NeExpr();
+
+};
+
+class AndExpr : public BinaryExpr
+{
+public:
+
+	AndExpr(Expr * expr1, Expr * expr2);
+
+public:
+
+	virtual stdstring genProgramCode();
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~AndExpr();
+
+};
+
+class OrExpr : public BinaryExpr
+{
+public:
+
+	OrExpr(Expr * expr1, Expr * expr2);
+
+public:
+
+	virtual stdstring genProgramCode();
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~OrExpr();
 
 };
 
