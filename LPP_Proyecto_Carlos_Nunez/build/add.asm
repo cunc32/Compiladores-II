@@ -18,7 +18,7 @@ prg:
 	mov dword [ebp + 12], eax
 
 	mov eax, dword [ebp + 12]
-	mov ecx, -2
+	mov ecx, 2
 	cdq
 	cmp eax, 0
 	jg div8

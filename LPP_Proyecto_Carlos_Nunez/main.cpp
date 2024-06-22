@@ -49,8 +49,10 @@ int main(int argc, char *argv[])
     try {
         parser.parse();
         std::cout << "Compiled with no errors" << std::endl;
+        return 0;
     }
     catch (const std::runtime_error& ex) {
         std::cerr << ex.what() << '\n';
+        return 1;
     }
 }

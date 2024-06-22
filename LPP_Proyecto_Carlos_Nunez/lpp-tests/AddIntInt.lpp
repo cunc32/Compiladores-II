@@ -4,5 +4,5 @@ Inicio
     x <- 3
     _y <- 2
     z <- x * _y
-    Escriba z div -2
+    Escriba z div 2
 Fin
