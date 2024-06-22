@@ -1373,7 +1373,7 @@ DefList::~DefList()
 stdstring DefList::genProgramCode()
 {
 	DefList *node = this;
-#line 758 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 744 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{ return ""; }
 #line 1379 "ExprAst.cpp"
 }
@@ -1381,7 +1381,7 @@ stdstring DefList::genProgramCode()
 stdstring DefList::genDefCode(stdstring type)
 {
 	DefList *node = this;
-#line 761 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 747 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring vList = node->varList->genDefCode(type);
 	    stdstring nVar = node->newVar->genDefCode(type);
@@ -1421,7 +1421,7 @@ DefVar::~DefVar()
 stdstring DefVar::genProgramCode()
 {
 	DefVar *node = this;
-#line 759 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 745 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{ return ""; }
 #line 1427 "ExprAst.cpp"
 }
@@ -1429,7 +1429,7 @@ stdstring DefVar::genProgramCode()
 stdstring DefVar::genDefCode(stdstring type)
 {
 	DefVar *node = this;
-#line 770 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 756 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    variables[node->newVar->id] = "dword [ebp + " + std::to_string(addOffset()) + "]";
 	    node->place = variables[node->newVar->id];
@@ -1596,7 +1596,7 @@ DefBlockStmt::~DefBlockStmt()
 stdstring DefBlockStmt::genProgramCode()
 {
 	DefBlockStmt *node = this;
-#line 737 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 723 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring dList = node->defList->genProgramCode();
 	    stdstring stmt = node->stmt->genProgramCode();
@@ -1638,7 +1638,7 @@ DefStmt::~DefStmt()
 stdstring DefStmt::genProgramCode()
 {
 	DefStmt *node = this;
-#line 747 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 733 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring type = node->varType->genProgramCode();
 	    stdstring code = node->varlist->genDefCode(node->varType->place);
@@ -1681,7 +1681,7 @@ ParamList::~ParamList()
 stdstring ParamList::genProgramCode()
 {
 	ParamList *node = this;
-#line 780 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 766 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring parList = node->parList->genProgramCode();
 	    stdstring stmt = node->stmt->genProgramCode();
@@ -1721,7 +1721,7 @@ ParamStmt::~ParamStmt()
 stdstring ParamStmt::genProgramCode()
 {
 	ParamStmt *node = this;
-#line 789 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 775 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring id = node->id->genProgramCode();
 	
@@ -1789,14 +1789,10 @@ stdstring PrintExprStmt::genProgramCode()
 	        node->code += "\n\tmov ebx, " + node->expr->place;
 	        node->code += "\n\tint 0x80";
 	    }
-	
-	    node->code += "\n\tmov eax, 11";
-	    node->code += "\n\tmov ebx, 10";
-	    node->code += "\n\tint 0x80";
 	    
 	    return node->code;
 	}
-#line 1800 "ExprAst.cpp"
+#line 1796 "ExprAst.cpp"
 }
 
 int PrintExprStmt::isA(int kind) const
@@ -1827,7 +1823,7 @@ PrintChStmt::~PrintChStmt()
 stdstring PrintChStmt::genProgramCode()
 {
 	PrintChStmt *node = this;
-#line 596 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 592 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring s1 = node->expr->genProgramCode();
 	
@@ -1839,14 +1835,9 @@ stdstring PrintChStmt::genProgramCode()
 	    node->code += "\n\tmov ebx," + node->expr->place;
 	    node->code += "\n\tint 0x80";
 	
-	    node->code += "\n\tmov eax, 11";
-	    node->code += "\n\tmov ebx, 10";
-	    node->code += "\n\tint 0x80";
-	    
-	
 	    return node->code;
 	}
-#line 1850 "ExprAst.cpp"
+#line 1841 "ExprAst.cpp"
 }
 
 int PrintChStmt::isA(int kind) const
@@ -1877,7 +1868,7 @@ PrintStrStmt::~PrintStrStmt()
 stdstring PrintStrStmt::genProgramCode()
 {
 	PrintStrStmt *node = this;
-#line 615 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 606 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring s1 = node->expr->genProgramCode();
 	
@@ -1890,14 +1881,9 @@ stdstring PrintStrStmt::genProgramCode()
 	    node->code += "\n\tlea ebx, [0x"+std::to_string(baseMem)+"]";
 	    node->code += "\n\tint 0x80";
 	
-	    node->code += "\n\tmov eax, 11";
-	    node->code += "\n\tmov ebx, 10";
-	    node->code += "\n\tint 0x80";
-	    
-	
 	    return node->code;
 	}
-#line 1901 "ExprAst.cpp"
+#line 1887 "ExprAst.cpp"
 }
 
 int PrintStrStmt::isA(int kind) const
@@ -1930,7 +1916,7 @@ IfStmt::~IfStmt()
 stdstring IfStmt::genProgramCode()
 {
 	IfStmt *node = this;
-#line 635 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 621 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	    stdstring cond = node->cond->genProgramCode();
@@ -1961,7 +1947,7 @@ stdstring IfStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 1965 "ExprAst.cpp"
+#line 1951 "ExprAst.cpp"
 }
 
 int IfStmt::isA(int kind) const
@@ -1993,7 +1979,7 @@ ElseIfStmt::~ElseIfStmt()
 stdstring ElseIfStmt::genProgramCode()
 {
 	ElseIfStmt *node = this;
-#line 666 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 652 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    stdstring cond = node->cond->genProgramCode();
 	    stdstring s = node->stmt->genProgramCode();
@@ -2008,7 +1994,7 @@ stdstring ElseIfStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 2012 "ExprAst.cpp"
+#line 1998 "ExprAst.cpp"
 }
 
 int ElseIfStmt::isA(int kind) const
@@ -2040,7 +2026,7 @@ AssignStmt::~AssignStmt()
 stdstring AssignStmt::genProgramCode()
 {
 	AssignStmt *node = this;
-#line 797 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 783 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int pre_offset = offset;
 	    // std::cout << "Escribiendo en assign: " << node->value->place << std::endl;
@@ -2078,7 +2064,7 @@ stdstring AssignStmt::genProgramCode()
 	    setOffset(pre_offset);
 	    return node->code;
 	}
-#line 2082 "ExprAst.cpp"
+#line 2068 "ExprAst.cpp"
 }
 
 int AssignStmt::isA(int kind) const
@@ -2110,7 +2096,7 @@ WhileStmt::~WhileStmt()
 stdstring WhileStmt::genProgramCode()
 {
 	WhileStmt *node = this;
-#line 681 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 667 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -2128,7 +2114,7 @@ stdstring WhileStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 2132 "ExprAst.cpp"
+#line 2118 "ExprAst.cpp"
 }
 
 int WhileStmt::isA(int kind) const
@@ -2160,7 +2146,7 @@ DWhileStmt::~DWhileStmt()
 stdstring DWhileStmt::genProgramCode()
 {
 	DWhileStmt *node = this;
-#line 699 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 685 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -2177,7 +2163,7 @@ stdstring DWhileStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 2181 "ExprAst.cpp"
+#line 2167 "ExprAst.cpp"
 }
 
 int DWhileStmt::isA(int kind) const
@@ -2210,7 +2196,7 @@ ForStmt::~ForStmt()
 stdstring ForStmt::genProgramCode()
 {
 	ForStmt *node = this;
-#line 716 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
+#line 702 "/mnt/c/Users/carlo/OneDrive/Documentos/GitHub/Compiladores-II/LPP_Proyecto_Carlos_Nunez/ExprAst.tc"
 	{
 	    int offset = addOffset();
 	
@@ -2231,7 +2217,7 @@ stdstring ForStmt::genProgramCode()
 	
 	    return node->code;
 	}
-#line 2235 "ExprAst.cpp"
+#line 2221 "ExprAst.cpp"
 }
 
 int ForStmt::isA(int kind) const

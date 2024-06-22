@@ -585,10 +585,6 @@ genProgramCode(PrintExprStmt) {
         node->code += "\n\tmov ebx, " + node->expr->place;
         node->code += "\n\tint 0x80";
     }
-
-    node->code += "\n\tmov eax, 11";
-    node->code += "\n\tmov ebx, 10";
-    node->code += "\n\tint 0x80";
     
     return node->code;
 }
@@ -604,11 +600,6 @@ genProgramCode(PrintChStmt) {
     node->code += "\n\tmov ebx," + node->expr->place;
     node->code += "\n\tint 0x80";
 
-    node->code += "\n\tmov eax, 11";
-    node->code += "\n\tmov ebx, 10";
-    node->code += "\n\tint 0x80";
-    
-
     return node->code;
 }
 
@@ -623,11 +614,6 @@ genProgramCode(PrintStrStmt) {
     node->code += "\n\tmov eax, 4";
     node->code += "\n\tlea ebx, [0x"+std::to_string(baseMem)+"]";
     node->code += "\n\tint 0x80";
-
-    node->code += "\n\tmov eax, 11";
-    node->code += "\n\tmov ebx, 10";
-    node->code += "\n\tint 0x80";
-    
 
     return node->code;
 }
